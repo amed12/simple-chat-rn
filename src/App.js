@@ -1,18 +1,6 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {ILlogo} from './assets';
+import Splash from './pages/Splash';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <ILlogo />
-      <Text>My Customer Services</Text>
-    </View>
-  );
+  return <Splash />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    alignSelf: 'center',
-  },
-});

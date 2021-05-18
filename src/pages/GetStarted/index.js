@@ -2,7 +2,7 @@ import React from 'react';
 import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 import {ILlogo} from '../../assets';
 import {BGgetstarted} from '../../assets/Icon';
-import {Button} from '../../component/Simple';
+import {Button, Gap} from '../../component/Simple';
 
 export default function GetStarted() {
   return (
@@ -16,7 +16,7 @@ export default function GetStarted() {
 
       <View>
         <Button title="Get Started" />
-        <View style={{height: 16}} />
+        <Gap height={16} width={0} />
         <Button type="secondary" title="Sign In" />
       </View>
     </ImageBackground>
@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: '600',
     color: 'white',
-    marginTop: 91,
+    marginTop: 60,
+    fontFamily: 'Nunito-SemiBold',
   },
 });

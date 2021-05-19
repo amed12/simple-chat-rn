@@ -4,7 +4,7 @@ import {ILlogo} from '../../assets';
 import {BGgetstarted} from '../../assets/Icon';
 import {Button, Gap} from '../../component/Simple';
 
-export default function GetStarted() {
+export default function GetStarted({navigation}) {
   return (
     <ImageBackground source={BGgetstarted} style={styles.page}>
       <View>
@@ -15,9 +15,16 @@ export default function GetStarted() {
       </View>
 
       <View>
-        <Button title="Get Started" onPressButton={() => alert('hello')} />
+        <Button
+          title="Get Started"
+          onPressButton={() => navigation.navigate('Register')}
+        />
         <Gap height={16} width={0} />
-        <Button type="secondary" title="Sign In" />
+        <Button
+          type="secondary"
+          title="Sign In"
+          onPressButton={() => navigation.navigate('Login')}
+        />
       </View>
     </ImageBackground>
   );

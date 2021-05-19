@@ -1,8 +1,14 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {useEffect} from 'react/cjs/react.development';
 import {ILlogo} from '../../assets';
 
-function Splash() {
+function Splash({navigation}) {
+  useEffect(() => {
+    setTimeout(() => {
+      navigation.replace('GetStarted');
+    }, 1200);
+  }, [navigation]);
   return (
     <View style={styles.container}>
       <ILlogo />

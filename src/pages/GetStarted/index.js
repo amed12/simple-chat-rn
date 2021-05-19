@@ -15,7 +15,7 @@ export default function GetStarted() {
       </View>
 
       <View>
-        <Button title="Get Started" />
+        <Button title="Get Started" onPressButton={() => alert('hello')} />
         <Gap height={16} width={0} />
         <Button type="secondary" title="Sign In" />
       </View>

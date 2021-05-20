@@ -8,9 +8,9 @@ export default function Login() {
     <ScrollView style={styles.page}>
       <ILlogo />
       <Text style={styles.textTitle}>Masuk dan mulai berkonsultasi</Text>
-      <Input title="Email Address" />
+      <Input label="Email Address" />
       <Gap height={24} />
-      <Input title="Password" />
+      <Input label="Password" />
       <Gap height={10} />
       <Link title="Forgot My Password" fontSize={12} />
       <Gap height={40} />

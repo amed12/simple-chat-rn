@@ -3,10 +3,10 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import {Button, Gap, Header, Input} from '../../component';
 import {colors} from '../../utils';
 
-export default function Register() {
+export default function Register({navigation}) {
   return (
     <ScrollView style={styles.page}>
-      <Header text="Register" />
+      <Header text="Register" onPress={() => navigation.goBack()} />
       <View style={styles.content}>
         <Input label="Full Name" />
         <Gap height={24} />

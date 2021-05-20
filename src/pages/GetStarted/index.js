@@ -3,6 +3,7 @@ import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 import {ILlogo} from '../../assets';
 import {BGgetstarted} from '../../assets/Icon';
 import {Button, Gap} from '../../component/Simple';
+import {colors} from '../../utils';
 
 export default function GetStarted({navigation}) {
   return (
@@ -35,11 +36,12 @@ const styles = StyleSheet.create({
     padding: 40,
     justifyContent: 'space-between',
     flex: 1,
+    backgroundColor: colors.white,
   },
   titleText: {
     fontSize: 28,
     fontWeight: '600',
-    color: 'white',
+    color: colors.white,
     marginTop: 60,
     fontFamily: 'Nunito-SemiBold',
   },

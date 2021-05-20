@@ -1,8 +1,29 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {GetStarted, Login, Register, Splash, UploadPhoto} from '../pages';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {
+  CustomerServices,
+  GetStarted,
+  Login,
+  Messages,
+  Offices,
+  Register,
+  Splash,
+  UploadPhoto,
+} from '../pages';
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+const MainApp = () => {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Customer Services" component={CustomerServices} />
+      <Tab.Screen name="Messages" component={Messages} />
+      <Tab.Screen name="Offices" component={Offices} />
+    </Tab.Navigator>
+  );
+};
+
 export default function Router() {
   return (
     <Stack.Navigator initialRouteName="Splash">
@@ -37,6 +58,13 @@ export default function Router() {
       <Stack.Screen
         name="UploadPhoto"
         component={UploadPhoto}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="MainApp"
+        component={MainApp}
         options={{
           headerShown: false,
         }}

@@ -4,7 +4,7 @@ import {ILlogo} from '../../assets';
 import {Button, Gap, Input, Link} from '../../component/Simple';
 import {colors, fonts} from '../../utils';
 
-export default function Login() {
+export default function Login({navigation}) {
   return (
     <ScrollView style={styles.page}>
       <ILlogo />
@@ -15,7 +15,10 @@ export default function Login() {
       <Gap height={10} />
       <Link title="Forgot My Password" fontSize={12} />
       <Gap height={40} />
-      <Button title="Sign In" />
+      <Button
+        title="Sign In"
+        onPressButton={() => navigation.replace('MainApp')}
+      />
       <Gap height={30} />
       <Link title="Create New Accounts" fontSize={16} align="center" />
       <Gap height={64} />

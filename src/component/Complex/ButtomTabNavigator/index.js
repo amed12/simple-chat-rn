@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {colors} from '../../../utils';
 import {TabItem} from '../../Simple';
 

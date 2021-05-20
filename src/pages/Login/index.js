@@ -2,7 +2,7 @@ import React from 'react';
 import {ScrollView, StyleSheet, Text} from 'react-native';
 import {ILlogo} from '../../assets';
 import {Button, Gap, Input, Link} from '../../component/Simple';
-import { colors } from '../../utils';
+import {colors} from '../../utils';
 
 export default function Login() {
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import { colors } from '../../../utils';
+import {colors} from '../../../utils';
 
 const Link = ({title, fontSize, align}) => {
   return (

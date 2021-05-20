@@ -1,12 +1,15 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 
 const Offices = () => {
   return (
-    <View>
-      <Text> Halaman Offices</Text>
+    <View style={styles.page}>
+      <Text>Halaman Offices</Text>
+      <Text>On Going</Text>
     </View>
   );
 };
-
+const styles = StyleSheet.create({
+  page: {flex: 1, alignItems: 'center', justifyContent: 'center'},
+});
 export default Offices;

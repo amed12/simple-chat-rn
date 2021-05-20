@@ -11,13 +11,14 @@ import {
   Splash,
   UploadPhoto,
 } from '../pages';
+import {BottomNav} from '../component';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const MainApp = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Customer Services" component={CustomerServices} />
+    <Tab.Navigator tabBar={props => <BottomNav {...props} />}>
+      <Tab.Screen name="CS" component={CustomerServices} />
       <Tab.Screen name="Messages" component={Messages} />
       <Tab.Screen name="Offices" component={Offices} />
     </Tab.Navigator>

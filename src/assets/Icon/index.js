@@ -10,6 +10,7 @@ import ICMessageActive from './messages_active.svg';
 import ICMessageInActive from './messages_inactive.svg';
 import ICOfficeActive from './offices_active.svg';
 import ICOfficeInActive from './offices_inactive.svg';
+import ICDummyCS from './dummy_cs.png';
 
 export {
   BGgetstarted,
@@ -24,4 +25,5 @@ export {
   ICMessageActive,
   ICCSActive,
   ICCSInactive,
+  ICDummyCS,
 };

@@ -1,15 +1,14 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
-import {ICDummyCS} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const ListChatroom = () => {
+const ListChatroom = ({name, lastMessage, profile}) => {
   return (
     <View style={styles.container}>
-      <Image source={ICDummyCS} style={styles.avatar} />
+      <Image source={profile} style={styles.avatar} />
       <View>
-        <Text style={styles.name}> Achmad samsul</Text>
-        <Text style={styles.desc}> Wah kamu habis ...</Text>
+        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.desc}>{lastMessage}</Text>
       </View>
     </View>
   );

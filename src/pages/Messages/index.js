@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {ICDummyCS} from '../../assets';
 import {ListChatroom} from '../../component';
 import {colors, fonts} from '../../utils';
@@ -20,42 +20,6 @@ const Messages = () => {
     },
     {
       id: 3,
-      profile: ICDummyCS,
-      name: 'Ridho',
-      lastMessage: 'terima kasih telah menghubungi kami',
-    },
-    {
-      id: 4,
-      profile: ICDummyCS,
-      name: 'Ridho',
-      lastMessage: 'terima kasih telah menghubungi kami',
-    },
-    {
-      id: 5,
-      profile: ICDummyCS,
-      name: 'Ridho',
-      lastMessage: 'terima kasih telah menghubungi kami',
-    },
-    {
-      id: 6,
-      profile: ICDummyCS,
-      name: 'Ridho',
-      lastMessage: 'terima kasih telah menghubungi kami',
-    },
-    {
-      id: 7,
-      profile: ICDummyCS,
-      name: 'Ridho',
-      lastMessage: 'terima kasih telah menghubungi kami',
-    },
-    {
-      id: 8,
-      profile: ICDummyCS,
-      name: 'Ridho',
-      lastMessage: 'terima kasih telah menghubungi kami',
-    },
-    {
-      id: 9,
       profile: ICDummyCS,
       name: 'Ridho',
       lastMessage: 'terima kasih telah menghubungi kami',

@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
 import {ChatItem, Header, InputChat} from '../../component';
 import {colors, fonts} from '../../utils';
 
@@ -11,12 +12,12 @@ const ChatRoom = ({navigation}) => {
         onPress={() => navigation.goBack()}
         type="dark-profile"
       />
-      <View style={styles.content }>
+      <ScrollView style={styles.content}>
         <Text style={styles.chatDate}>ini chatroom</Text>
+        <ChatItem isMe />
         <ChatItem />
-        <ChatItem />
-        <ChatItem />
-      </View>
+        <ChatItem isMe />
+      </ScrollView>
       <InputChat />
     </View>
   );

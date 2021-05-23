@@ -4,10 +4,10 @@ import {ImgDummyCS2} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 import {Button} from '../../Simple';
 
-const DarkProfile = () => {
+const DarkProfile = ({onPress}) => {
   return (
     <View style={styles.container}>
-      <Button type="icon-only" icon="back-light" />
+      <Button type="icon-only" icon="back-light" onPressButton={onPress} />
       <View style={styles.content}>
         <Text style={styles.name}>Ramli</Text>
         <Text style={styles.desc}>CS Product A</Text>

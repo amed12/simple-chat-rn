@@ -6,6 +6,7 @@ const mainColors = {
   grey1: '#7d8797',
   grey2: '#e9e9e9',
   grey3: '#edeef0',
+  grey4: '#EDFCFD',
   blue1: '#0066cb',
 };
 
@@ -15,6 +16,7 @@ export const colors = {
   tertiary: mainColors.blue1,
   white: 'white',
   black: 'black',
+  cardLight: mainColors.grey4,
   disable: mainColors.grey3,
   text: {
     primary: mainColors.dark1,

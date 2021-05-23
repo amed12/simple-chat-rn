@@ -2,6 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
+  ChatRoom,
   CustomerServices,
   GetStarted,
   Login,
@@ -17,7 +18,9 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const MainApp = () => {
   return (
-    <Tab.Navigator tabBar={props => <BottomNav {...props} />}>
+    <Tab.Navigator
+      tabBar={props => <BottomNav {...props} />}
+      initialRouteName="Messages">
       <Tab.Screen name="CS" component={CustomerServices} />
       <Tab.Screen name="Messages" component={Messages} />
       <Tab.Screen name="Offices" component={Offices} />
@@ -66,6 +69,13 @@ export default function Router() {
       <Stack.Screen
         name="MainApp"
         component={MainApp}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ChatRoom"
+        component={ChatRoom}
         options={{
           headerShown: false,
         }}

@@ -1,16 +1,16 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {colors, fonts} from '../../../utils';
 
-const ListChatroom = ({name, lastMessage, profile}) => {
+const ListChatroom = ({name, lastMessage, profile, onPress}) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <Image source={profile} style={styles.avatar} />
       <View>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.desc}>{lastMessage}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

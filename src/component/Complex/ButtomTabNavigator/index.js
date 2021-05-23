@@ -46,8 +46,8 @@ const ButtomNavigation = ({state, descriptors, navigation}) => {
             key={index}
             title={label}
             active={isFocused}
-            onPress={onPress}
-            onLongPress={onLongPress}
+            // onPress={onPress}
+            // onLongPress={onLongPress}
           />
         );
       })}

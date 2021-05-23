@@ -11,6 +11,10 @@ import ICMessageInActive from './messages_inactive.svg';
 import ICOfficeActive from './offices_active.svg';
 import ICOfficeInActive from './offices_inactive.svg';
 import ICDummyCS from './dummy_cs.png';
+import ICBackLight from './back-light.svg';
+import ImgDummyCS2 from './dummy-cs-2.png';
+import ICSendActive from './btn_send_active.svg';
+import ICSendDisable from './btn_send_inactive.svg';
 
 export {
   BGgetstarted,
@@ -26,4 +30,8 @@ export {
   ICCSActive,
   ICCSInactive,
   ICDummyCS,
+  ICBackLight,
+  ImgDummyCS2,
+  ICSendActive,
+  ICSendDisable,
 };

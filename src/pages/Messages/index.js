@@ -4,7 +4,7 @@ import {ICDummyCS} from '../../assets';
 import {ListChatroom} from '../../component';
 import {colors, fonts} from '../../utils';
 
-const Messages = () => {
+const Messages = ({navigation}) => {
   const [messages] = useState([
     {
       id: 1,
@@ -36,6 +36,7 @@ const Messages = () => {
               profile={message.profile}
               name={message.name}
               lastMessage={message.lastMessage}
+              onPress={() => navigation.navigate('ChatRoom')}
             />
           );
         })}

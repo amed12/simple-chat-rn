@@ -6,6 +6,7 @@ import UploadPhoto from './UploadPhoto';
 import CustomerServices from './CustomerServices';
 import Messages from './Messages';
 import Offices from './Offices';
+import ChatRoom from './ChatRoom';
 
 export {
   Splash,
@@ -16,4 +17,5 @@ export {
   CustomerServices,
   Messages,
   Offices,
+  ChatRoom,
 };

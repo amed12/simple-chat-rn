@@ -7,7 +7,7 @@ import {colors, fonts} from '../../utils';
 const UploadPhoto = ({navigation}) => {
   return (
     <View style={styles.page}>
-      <Header text="Upload Photo" />
+      <Header text="Upload Photo" onPress={() => navigation.goBack()} />
       <View style={styles.content}>
         <View style={styles.avatar}>
           <View style={styles.profileWrapper}>

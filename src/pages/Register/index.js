@@ -5,7 +5,7 @@ import {colors} from '../../utils';
 
 export default function Register({navigation}) {
   return (
-    <ScrollView style={styles.page}>
+    <ScrollView style={styles.page} showsHorizontalScrollIndicator={false}>
       <Header text="Register" onPress={() => navigation.goBack()} />
       <View style={styles.content}>
         <Input label="Full Name" />

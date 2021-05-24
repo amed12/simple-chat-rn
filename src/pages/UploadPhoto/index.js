@@ -4,7 +4,7 @@ import {ICAddUserProfle, ICEmptyProfile} from '../../assets';
 import {Button, Gap, Header, Link} from '../../component';
 import {colors, fonts} from '../../utils';
 
-const UploadPhoto = () => {
+const UploadPhoto = ({navigation}) => {
   return (
     <View style={styles.page}>
       <Header text="Upload Photo" />
@@ -20,7 +20,12 @@ const UploadPhoto = () => {
         <View>
           <Button title="Upload and Continue" />
           <Gap height={30} />
-          <Link title="Skip for this" align="center" fontSize={16} />
+          <Link
+            title="Skip for this"
+            align="center"
+            fontSize={16}
+            onPress={() => navigation.replace('MainApp')}
+          />
         </View>
       </View>
     </View>

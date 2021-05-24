@@ -20,7 +20,12 @@ export default function Login({navigation}) {
         onPressButton={() => navigation.replace('MainApp')}
       />
       <Gap height={30} />
-      <Link title="Create New Accounts" fontSize={16} align="center" />
+      <Link
+        title="Create New Accounts"
+        fontSize={16}
+        align="center"
+        onPress={() => navigation.navigate('Register')}
+      />
       <Gap height={64} />
     </ScrollView>
   );

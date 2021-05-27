@@ -1,8 +1,9 @@
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {Button, Gap, Header, Input} from '../../component';
+import { Button, Gap, Header, Input, Loading } from "../../component";
 import {colors, showAlert, useForm} from '../../utils';
 import {FirebaseUtils} from '../../config';
+import { useState } from 'react';
 
 export default function Register({navigation}) {
   const [form, setForm] = useForm({
@@ -11,14 +12,18 @@ export default function Register({navigation}) {
     email: '',
     password: '',
   });
+  const [loading, setLoading] = useState(false);
   const onProcessForm = () => {
+    setLoading(true);
     FirebaseUtils.auth()
       .createUserWithEmailAndPassword(form.email, form.password)
       .then(success => {
+        setLoading(false);
         console.log('register success', success);
       })
       .catch(error => {
         const errorMessage = error.message;
+        setLoading(false);
         console.log('error register: ', errorMessage);
       });
   };
@@ -67,6 +72,7 @@ export default function Register({navigation}) {
           }}
         />
       </View>
+      {loading && <Loading />}
     </ScrollView>
   );
 }

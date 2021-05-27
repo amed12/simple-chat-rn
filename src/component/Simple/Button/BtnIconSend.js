@@ -3,7 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import {ICSendActive, ICSendDisable} from '../../../assets';
 import {colors} from '../../../utils';
 
-const BrnIconSend = ({disable}) => {
+const BtnIconSend = ({disable}) => {
   return (
     <View style={styles.container(disable)}>
       {disable && <ICSendDisable />}
@@ -12,7 +12,7 @@ const BrnIconSend = ({disable}) => {
   );
 };
 
-export default BrnIconSend;
+export default BtnIconSend;
 
 const styles = StyleSheet.create({
   container: disable => ({

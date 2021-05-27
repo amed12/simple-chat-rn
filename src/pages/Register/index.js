@@ -1,9 +1,10 @@
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import { Button, Gap, Header, Input, Loading } from "../../component";
+import {Button, Gap, Header, Input, Loading} from '../../component';
 import {colors, showAlert, useForm} from '../../utils';
 import {FirebaseUtils} from '../../config';
-import { useState } from 'react';
+import {useState} from 'react';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 export default function Register({navigation}) {
   const [form, setForm] = useForm({
@@ -25,7 +26,12 @@ export default function Register({navigation}) {
       .catch(error => {
         const errorMessage = error.message;
         setLoading(false);
-        console.log('error register: ', errorMessage);
+        showMessage({
+          message: errorMessage,
+          type: 'default',
+          backgroundColor: colors.error,
+          color: colors.white,
+        });
       });
   };
   return (
@@ -68,7 +74,12 @@ export default function Register({navigation}) {
             ) {
               onProcessForm();
             } else {
-              showAlert('Please fill form first !');
+              showMessage({
+                message: 'Please fill all data first !',
+                type: 'default',
+                backgroundColor: colors.error,
+                color: colors.white,
+              });
             }
           }}
         />

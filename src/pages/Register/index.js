@@ -1,10 +1,10 @@
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Button, Gap, Header, Input, Loading} from '../../component';
-import {colors, showAlert, useForm} from '../../utils';
+import {colors, useForm} from '../../utils';
 import {FirebaseUtils} from '../../config';
 import {useState} from 'react';
-import {showMessage, hideMessage} from 'react-native-flash-message';
+import {showMessage} from 'react-native-flash-message';
 
 export default function Register({navigation}) {
   const [form, setForm] = useForm({

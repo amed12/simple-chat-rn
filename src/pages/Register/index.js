@@ -2,6 +2,7 @@ import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Button, Gap, Header, Input} from '../../component';
 import {colors, showAlert, useForm} from '../../utils';
+import {FirebaseUtils} from '../../config';
 
 export default function Register({navigation}) {
   const [form, setForm] = useForm({
@@ -10,6 +11,17 @@ export default function Register({navigation}) {
     email: '',
     password: '',
   });
+  const onProcessForm = () => {
+    FirebaseUtils.auth()
+      .createUserWithEmailAndPassword(form.email, form.password)
+      .then(success => {
+        console.log('register success', success);
+      })
+      .catch(error => {
+        const errorMessage = error.message;
+        console.log('error register: ', errorMessage);
+      });
+  };
   return (
     <ScrollView style={styles.page} showsHorizontalScrollIndicator={false}>
       <Header text="Register" onPress={() => navigation.goBack()} />
@@ -48,7 +60,7 @@ export default function Register({navigation}) {
               form.email !== '' &&
               form.password !== ''
             ) {
-              navigation.navigate('UploadPhoto');
+              onProcessForm();
             } else {
               showAlert('Please fill form first !');
             }

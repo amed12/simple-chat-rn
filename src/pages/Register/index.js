@@ -1,10 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {Button, Gap, Header, Input, Loading} from '../../component';
-import {colors, useForm} from '../../utils';
-import {FirebaseUtils} from '../../config';
-import {useState} from 'react';
 import {showMessage} from 'react-native-flash-message';
+import {Button, Gap, Header, Input, Loading} from '../../component';
+import {Qiscus} from '../../config';
+import {colors, useForm} from '../../utils';
 
 export default function Register({navigation}) {
   const [form, setForm] = useForm({
@@ -16,11 +15,12 @@ export default function Register({navigation}) {
   const [loading, setLoading] = useState(false);
   const onProcessForm = () => {
     setLoading(true);
-    FirebaseUtils.auth()
-      .createUserWithEmailAndPassword(form.email, form.password)
+    Qiscus.qiscus
+      .setUser(form.email, form.password)
       .then(success => {
         setLoading(false);
         setForm('reset');
+        navigation.replace('UploadPhoto');
         console.log('register success', success);
       })
       .catch(error => {
@@ -35,57 +35,44 @@ export default function Register({navigation}) {
       });
   };
   return (
-    <ScrollView style={styles.page} showsHorizontalScrollIndicator={false}>
-      <Header text="Register" onPress={() => navigation.goBack()} />
-      <View style={styles.content}>
-        <Input
-          label="Full Name"
-          value={form.fullName}
-          onChangeText={value => setForm('fullName', value)}
-        />
-        <Gap height={24} />
-        <Input
-          value={form.job}
-          label="Pekerjaan"
-          onChangeText={value => setForm('job', value)}
-        />
-        <Gap height={24} />
-        <Input
-          value={form.email}
-          label="Email"
-          onChangeText={value => setForm('email', value)}
-        />
-        <Gap height={24} />
-        <Input
-          value={form.password}
-          label="Password"
-          onChangeText={value => setForm('password', value)}
-          isSecureContext={true}
-        />
-        <Gap height={40} />
-        <Button
-          title="Continue"
-          onPressButton={() => {
-            if (
-              form.fullName !== '' &&
-              form.job !== '' &&
-              form.email !== '' &&
-              form.password !== ''
-            ) {
-              onProcessForm();
-            } else {
-              showMessage({
-                message: 'Please fill all data first !',
-                type: 'default',
-                backgroundColor: colors.error,
-                color: colors.white,
-              });
-            }
-          }}
-        />
+    <>
+      <View style={styles.page}>
+        <ScrollView showsHorizontalScrollIndicator={false}>
+          <Header text="Register" onPress={() => navigation.goBack()} />
+          <View style={styles.content}>
+            <Input
+              value={form.email}
+              label="Email"
+              onChangeText={value => setForm('email', value)}
+            />
+            <Gap height={24} />
+            <Input
+              value={form.password}
+              label="Password"
+              onChangeText={value => setForm('password', value)}
+              isSecureContext={true}
+            />
+            <Gap height={40} />
+            <Button
+              title="Continue"
+              onPressButton={() => {
+                if (form.email !== '' && form.password !== '') {
+                  onProcessForm();
+                } else {
+                  showMessage({
+                    message: 'Please fill all data first !',
+                    type: 'default',
+                    backgroundColor: colors.error,
+                    color: colors.white,
+                  });
+                }
+              }}
+            />
+          </View>
+        </ScrollView>
       </View>
       {loading && <Loading />}
-    </ScrollView>
+    </>
   );
 }
 

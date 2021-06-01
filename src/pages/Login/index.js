@@ -1,10 +1,9 @@
-import React from 'react';
-import {useState} from 'react';
+import React, {useState} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {showMessage} from 'react-native-flash-message';
 import {ILlogo} from '../../assets';
 import {Button, Gap, Input, Link, Loading} from '../../component/Simple';
-import {FirebaseUtils, Qiscus} from '../../config';
+import {Qiscus} from '../../config';
 import {colors, fonts, useForm} from '../../utils';
 
 export default function Login({navigation}) {
@@ -19,7 +18,7 @@ export default function Login({navigation}) {
         .then(res => {
           setLoading(false);
           console.log('qiscus', res);
-          // navigation.replace('MainApp');
+          navigation.replace('MainApp');
         })
         .catch(err => {
           setLoading(false);

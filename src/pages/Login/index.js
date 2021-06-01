@@ -4,7 +4,7 @@ import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {showMessage} from 'react-native-flash-message';
 import {ILlogo} from '../../assets';
 import {Button, Gap, Input, Link, Loading} from '../../component/Simple';
-import {FirebaseUtils} from '../../config';
+import {FirebaseUtils, Qiscus} from '../../config';
 import {colors, fonts, useForm} from '../../utils';
 
 export default function Login({navigation}) {
@@ -13,21 +13,53 @@ export default function Login({navigation}) {
   const onProcessForm = () => {
     console.log('form', form);
     setLoading(true);
-    FirebaseUtils.auth()
-      .signInWithEmailAndPassword(form.email, form.password)
-      .then(() => {
-        setLoading(false);
-        navigation.replace('MainApp');
-      })
-      .catch(err => {
-        setLoading(false);
-        showMessage({
-          message: err.message,
-          type: 'default',
-          backgroundColor: colors.error,
-          color: colors.white,
+    if (form.email !== '' && form.password !== '') {
+      Qiscus.qiscus
+        .setUser(form.email, form.password)
+        .then(res => {
+          setLoading(false);
+          console.log('qiscus', res);
+          // navigation.replace('MainApp');
+        })
+        .catch(err => {
+          setLoading(false);
+          console.log({...err});
+          showMessage({
+            message: err.response.text,
+            type: 'default',
+            backgroundColor: colors.error,
+            color: colors.white,
+          });
         });
+    } else {
+      setLoading(false);
+      showMessage({
+        message: 'Please fill out email or password!',
+        type: 'default',
+        backgroundColor: colors.error,
+        color: colors.white,
       });
+    }
+    // FirebaseUtils.auth()
+    //   .signInWithEmailAndPassword(form.email, form.password)
+    //   .then(res => {
+    //     setLoading(false);
+    //     console.log('utils', res);
+    //     // navigation.replace('MainApp');
+    //     // qiscus
+    //     //   .setUser(userId, userKey)
+    //     //   .then(res => console.log('success login', res))
+    //     //   .catch(err => console.log('Failed login', err));
+    //   })
+    //   .catch(err => {
+    //     setLoading(false);
+    //     showMessage({
+    //       message: err.message,
+    //       type: 'default',
+    //       backgroundColor: colors.error,
+    //       color: colors.white,
+    //     });
+    //   });
   };
   return (
     <>

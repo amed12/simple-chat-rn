@@ -4,18 +4,25 @@ import {ICAddUserProfle, ICEmptyProfile} from '../../assets';
 import {Button, Gap, Header, Link} from '../../component';
 import {colors, fonts} from '../../utils';
 
-const UploadPhoto = ({navigation}) => {
+const UploadPhoto = ({route, navigation}) => {
+  const {form} = route.params;
+  console.log('route param', form);
   return (
     <View style={styles.page}>
       <Header text="Upload Photo" onPress={() => navigation.goBack()} />
       <View style={styles.content}>
         <View style={styles.avatar}>
           <View style={styles.profileWrapper}>
-            <Image source={ICEmptyProfile} style={styles.profile} />
+            <Image
+              source={{
+                uri: form.avatarUrl,
+              }}
+              style={styles.profile}
+            />
             <ICAddUserProfle style={styles.addPhoto} />
           </View>
-          <Text style={styles.name}>Lina Maunya</Text>
-          <Text style={styles.job}>Front End</Text>
+          <Text style={styles.name}>{form.fullName}</Text>
+          <Text style={styles.job}>{form.job}</Text>
         </View>
         <View>
           <Button title="Upload and Continue" />

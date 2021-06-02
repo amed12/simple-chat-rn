@@ -12,7 +12,8 @@ export default function Register({navigation}) {
     email: '',
     password: '',
     userName: '',
-    avatarUrl: '',
+    avatarUrl:
+      'https://d1edrlpyc25xu0.cloudfront.net/kiwari-prod/image/upload/75r6s_jOHa/1507541871-avatar-mine.png',
   });
   const [loading, setLoading] = useState(false);
   const onProcessForm = () => {
@@ -25,7 +26,9 @@ export default function Register({navigation}) {
       .then(success => {
         setLoading(false);
         setForm('reset');
-        navigation.replace('UploadPhoto');
+        navigation.replace('UploadPhoto', {
+          form: form,
+        });
         console.log('register success', success);
       })
       .catch(error => {
@@ -52,7 +55,7 @@ export default function Register({navigation}) {
             />
             <Gap height={24} />
             <Input
-              value={form.username}
+              value={form.userName}
               label="Username"
               onChangeText={value => setForm('userName', value)}
             />

@@ -1,24 +1,15 @@
-import React from 'react';
-import {useState} from 'react';
-import {
-  Alert,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {ICAddUserProfle, ICEmptyProfile, ICloseRed} from '../../assets';
-import {Button, Gap, Header, Link} from '../../component';
-import {colors, fonts, showAlert} from '../../utils';
+import React, {useState} from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import * as ImagePicker from 'react-native-image-picker';
+import {ICAddUserProfle, ICloseRed} from '../../assets';
+import {Button, Gap, Header, Link} from '../../component';
+import {colors, fonts} from '../../utils';
 
 const UploadPhoto = ({route, navigation}) => {
   const {form} = route.params;
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState({uri: form.avatarUrl});
   const onImageClick = () => {
-    // showAlert('hallo');
     ImagePicker.launchImageLibrary({mediaType: 'mixed'}, response => {
       const source = {uri: response.assets[0].uri};
       setPhoto(source);

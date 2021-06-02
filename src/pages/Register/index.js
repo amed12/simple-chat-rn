@@ -3,7 +3,7 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import {showMessage} from 'react-native-flash-message';
 import {Button, Gap, Header, Input, Loading} from '../../component';
 import {Qiscus} from '../../config';
-import {colors, useForm} from '../../utils';
+import {colors, LocalStorage, useForm} from '../../utils';
 
 export default function Register({navigation}) {
   const [form, setForm] = useForm({
@@ -26,9 +26,17 @@ export default function Register({navigation}) {
       .then(success => {
         setLoading(false);
         setForm('reset');
-        navigation.replace('UploadPhoto', {
-          form: form,
-        });
+        const data = {
+          form: {
+            userName: form.userName,
+            fullName: form.fullName,
+            job: form.job,
+            email: form.email,
+            avatarUrl: form.avatarUrl,
+          },
+        };
+        LocalStorage.storeDataObject('user', data);
+        navigation.replace('UploadPhoto');
         console.log('register success', success);
       })
       .catch(error => {

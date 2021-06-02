@@ -4,10 +4,10 @@ import {showMessage} from 'react-native-flash-message';
 import * as ImagePicker from 'react-native-image-picker';
 import {ICAddUserProfle, ICloseRed} from '../../assets';
 import {Button, Gap, Header, Link} from '../../component';
-import {colors, fonts} from '../../utils';
+import {colors, fonts, LocalStorage} from '../../utils';
 
-const UploadPhoto = ({route, navigation}) => {
-  const {form} = route.params;
+const UploadPhoto = ({navigation}) => {
+  const {form} = LocalStorage.getDataObject('user').form;
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState({uri: form.avatarUrl});
   const onImageClick = () => {

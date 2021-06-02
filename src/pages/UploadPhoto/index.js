@@ -1,34 +1,49 @@
 import React from 'react';
 import {useState} from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
-import {ICAddUserProfle, ICloseRed} from '../../assets';
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {ICAddUserProfle, ICEmptyProfile, ICloseRed} from '../../assets';
 import {Button, Gap, Header, Link} from '../../component';
-import {colors, fonts} from '../../utils';
+import {colors, fonts, showAlert} from '../../utils';
+import * as ImagePicker from 'react-native-image-picker';
 
 const UploadPhoto = ({route, navigation}) => {
   const {form} = route.params;
   const [hasPhoto, setHasPhoto] = useState(false);
+  const [photo, setPhoto] = useState({uri: form.avatarUrl});
+  const onImageClick = () => {
+    // showAlert('hallo');
+    ImagePicker.launchImageLibrary({mediaType: 'mixed'}, response => {
+      const source = {uri: response.assets[0].uri};
+      setPhoto(source);
+      setHasPhoto(true);
+      console.log('response ->', response.assets[0].uri);
+    });
+  };
   console.log('route param', form);
   return (
     <View style={styles.page}>
       <Header text="Upload Photo" onPress={() => navigation.goBack()} />
       <View style={styles.content}>
         <View style={styles.avatar}>
-          <View style={styles.profileWrapper}>
-            <Image
-              source={{
-                uri: form.avatarUrl,
-              }}
-              style={styles.profile}
-            />
+          <TouchableOpacity
+            style={styles.profileWrapper}
+            onPress={onImageClick}>
+            <Image source={photo} style={styles.profile} />
             {!hasPhoto && <ICAddUserProfle style={styles.addPhoto} />}
             {hasPhoto && <ICloseRed style={styles.addPhoto} />}
-          </View>
+          </TouchableOpacity>
           <Text style={styles.name}>{form.fullName}</Text>
           <Text style={styles.job}>{form.job}</Text>
         </View>
         <View>
-          <Button title="Upload and Continue" disable />
+          <Button title="Upload and Continue" disable={!hasPhoto} />
           <Gap height={30} />
           <Link
             title="Skip for this"
@@ -52,6 +67,7 @@ const styles = StyleSheet.create({
   profile: {
     width: 110,
     height: 110,
+    borderRadius: 110 / 2,
   },
   profileWrapper: {
     width: 130,

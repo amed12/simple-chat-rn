@@ -27,7 +27,6 @@ const UploadPhoto = ({route, navigation}) => {
       }
     });
   };
-  console.log('route param', form);
   return (
     <View style={styles.page}>
       <Header text="Upload Photo" onPress={() => navigation.goBack()} />

@@ -1,11 +1,13 @@
 import React from 'react';
+import {useState} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
-import {ICAddUserProfle, ICEmptyProfile} from '../../assets';
+import {ICAddUserProfle, ICloseRed} from '../../assets';
 import {Button, Gap, Header, Link} from '../../component';
 import {colors, fonts} from '../../utils';
 
 const UploadPhoto = ({route, navigation}) => {
   const {form} = route.params;
+  const [hasPhoto, setHasPhoto] = useState(false);
   console.log('route param', form);
   return (
     <View style={styles.page}>
@@ -19,13 +21,14 @@ const UploadPhoto = ({route, navigation}) => {
               }}
               style={styles.profile}
             />
-            <ICAddUserProfle style={styles.addPhoto} />
+            {!hasPhoto && <ICAddUserProfle style={styles.addPhoto} />}
+            {hasPhoto && <ICloseRed style={styles.addPhoto} />}
           </View>
           <Text style={styles.name}>{form.fullName}</Text>
           <Text style={styles.job}>{form.job}</Text>
         </View>
         <View>
-          <Button title="Upload and Continue" />
+          <Button title="Upload and Continue" disable />
           <Gap height={30} />
           <Link
             title="Skip for this"

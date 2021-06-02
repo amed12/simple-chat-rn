@@ -3,7 +3,7 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import {showMessage} from 'react-native-flash-message';
 import {Button, Gap, Header, Input, Loading} from '../../component';
 import {Qiscus} from '../../config';
-import {colors, LocalStorage, useForm} from '../../utils';
+import {colors, getDataObject, storeDataObject, useForm} from '../../utils';
 
 export default function Register({navigation}) {
   const [form, setForm] = useForm({
@@ -12,8 +12,6 @@ export default function Register({navigation}) {
     email: '',
     password: '',
     userName: '',
-    avatarUrl:
-      'https://d1edrlpyc25xu0.cloudfront.net/kiwari-prod/image/upload/75r6s_jOHa/1507541871-avatar-mine.png',
   });
   const [loading, setLoading] = useState(false);
   const onProcessForm = () => {
@@ -27,15 +25,12 @@ export default function Register({navigation}) {
         setLoading(false);
         setForm('reset');
         const data = {
-          form: {
-            userName: form.userName,
-            fullName: form.fullName,
-            job: form.job,
-            email: form.email,
-            avatarUrl: form.avatarUrl,
-          },
+          userName: form.userName,
+          fullName: form.fullName,
+          job: form.job,
+          email: form.email,
         };
-        LocalStorage.storeDataObject('user', data);
+        storeDataObject('user', data);
         navigation.replace('UploadPhoto');
         console.log('register success', success);
       })

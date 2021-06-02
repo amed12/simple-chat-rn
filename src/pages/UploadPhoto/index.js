@@ -4,12 +4,18 @@ import {showMessage} from 'react-native-flash-message';
 import * as ImagePicker from 'react-native-image-picker';
 import {ICAddUserProfle, ICloseRed} from '../../assets';
 import {Button, Gap, Header, Link} from '../../component';
-import {colors, fonts, LocalStorage} from '../../utils';
+import {colors, fonts, getDataObject} from '../../utils';
 
 const UploadPhoto = ({navigation}) => {
-  const {form} = LocalStorage.getDataObject('user').form;
+  const [form, setForm] = useState({});
+  const [photo, setPhoto] = useState({
+    uri: 'https://d1edrlpyc25xu0.cloudfront.net/kiwari-prod/image/upload/75r6s_jOHa/1507541871-avatar-mine.png',
+  });
+  getDataObject('user').then(res => {
+    setForm(res);
+  });
   const [hasPhoto, setHasPhoto] = useState(false);
-  const [photo, setPhoto] = useState({uri: form.avatarUrl});
+
   const onImageClick = () => {
     ImagePicker.launchImageLibrary({mediaType: 'mixed'}, response => {
       console.log('response ->', response);
@@ -27,7 +33,6 @@ const UploadPhoto = ({navigation}) => {
       }
     });
   };
-  console.log('route param', form);
   return (
     <View style={styles.page}>
       <Header text="Upload Photo" onPress={() => navigation.goBack()} />

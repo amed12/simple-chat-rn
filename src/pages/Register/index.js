@@ -11,12 +11,17 @@ export default function Register({navigation}) {
     job: '',
     email: '',
     password: '',
+    userName: '',
+    avatarUrl: '',
   });
   const [loading, setLoading] = useState(false);
   const onProcessForm = () => {
     setLoading(true);
     Qiscus.qiscus
-      .setUser(form.email, form.password)
+      .setUser(form.email, form.password, form.userName, form.avatarUrl, {
+        job: form.job,
+        fullName: form.fullName,
+      })
       .then(success => {
         setLoading(false);
         setForm('reset');
@@ -41,6 +46,24 @@ export default function Register({navigation}) {
           <Header text="Register" onPress={() => navigation.goBack()} />
           <View style={styles.content}>
             <Input
+              value={form.fullName}
+              label="Fullname"
+              onChangeText={value => setForm('fullName', value)}
+            />
+            <Gap height={24} />
+            <Input
+              value={form.username}
+              label="Username"
+              onChangeText={value => setForm('userName', value)}
+            />
+            <Gap height={24} />
+            <Input
+              value={form.job}
+              label="Job"
+              onChangeText={value => setForm('job', value)}
+            />
+            <Gap height={24} />
+            <Input
               value={form.email}
               label="Email"
               onChangeText={value => setForm('email', value)}
@@ -56,7 +79,12 @@ export default function Register({navigation}) {
             <Button
               title="Continue"
               onPressButton={() => {
-                if (form.email !== '' && form.password !== '') {
+                if (
+                  form.email !== '' &&
+                  form.password !== '' &&
+                  form.fullName !== '' &&
+                  form.job !== ''
+                ) {
                   onProcessForm();
                 } else {
                   showMessage({

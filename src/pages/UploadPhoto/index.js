@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {showMessage} from 'react-native-flash-message';
 import * as ImagePicker from 'react-native-image-picker';
 import {ICAddUserProfle, ICloseRed} from '../../assets';
 import {Button, Gap, Header, Link} from '../../component';
@@ -11,10 +12,19 @@ const UploadPhoto = ({route, navigation}) => {
   const [photo, setPhoto] = useState({uri: form.avatarUrl});
   const onImageClick = () => {
     ImagePicker.launchImageLibrary({mediaType: 'mixed'}, response => {
-      const source = {uri: response.assets[0].uri};
-      setPhoto(source);
-      setHasPhoto(true);
-      console.log('response ->', response.assets[0].uri);
+      console.log('response ->', response);
+      if (response.didCancel) {
+        showMessage({
+          message: 'Opss, you not choose any photo !',
+          type: 'default',
+          backgroundColor: colors.error,
+          color: colors.white,
+        });
+      } else {
+        const source = {uri: response.assets[0].uri};
+        setPhoto(source);
+        setHasPhoto(true);
+      }
     });
   };
   console.log('route param', form);

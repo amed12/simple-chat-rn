@@ -11,7 +11,7 @@ const UploadPhoto = ({route, navigation}) => {
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState({uri: form.avatarUrl});
   const onImageClick = () => {
-    ImagePicker.launchImageLibrary({mediaType: 'mixed'}, response => {
+    ImagePicker.launchImageLibrary({mediaType: 'photo'}, response => {
       console.log('response ->', response);
       if (response.didCancel) {
         showMessage({

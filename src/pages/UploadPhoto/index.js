@@ -4,12 +4,27 @@ import {showMessage} from 'react-native-flash-message';
 import * as ImagePicker from 'react-native-image-picker';
 import {ICAddUserProfle, ICloseRed} from '../../assets';
 import {Button, Gap, Header, Link} from '../../component';
+import {Qiscus} from '../../config';
 import {colors, fonts} from '../../utils';
 
 const UploadPhoto = ({route, navigation}) => {
   const {form} = route.params;
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState({uri: form.avatarUrl});
+  const updateProfile = () => {
+    Qiscus.qiscus
+      .updateProfile({
+        name: form.fullName, // String
+        avatar_url: photo.uri,
+      })
+      .then(res => {
+        console.log('update profile success', res);
+        navigation.replace('MainApp');
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
   const onImageClick = () => {
     ImagePicker.launchImageLibrary({mediaType: 'photo'}, response => {
       console.log('response ->', response);
@@ -43,7 +58,11 @@ const UploadPhoto = ({route, navigation}) => {
           <Text style={styles.job}>{form.job}</Text>
         </View>
         <View>
-          <Button title="Upload and Continue" disable={!hasPhoto} />
+          <Button
+            title="Upload and Continue"
+            disable={!hasPhoto}
+            onPressButton={updateProfile}
+          />
           <Gap height={30} />
           <Link
             title="Skip for this"

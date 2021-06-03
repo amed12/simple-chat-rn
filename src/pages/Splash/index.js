@@ -2,12 +2,17 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {useEffect} from 'react/cjs/react.development';
 import {ILlogo} from '../../assets';
+import {Qiscus} from '../../config';
 import {colors, fonts} from '../../utils';
 
 function Splash({navigation}) {
   useEffect(() => {
     setTimeout(() => {
-      navigation.replace('GetStarted');
+      if (Qiscus.qiscus.isLogin) {
+        navigation.replace('MainApp');
+      } else {
+        navigation.replace('GetStarted');
+      }
     }, 1200);
   }, [navigation]);
   return (

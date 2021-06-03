@@ -11,11 +11,12 @@ const UploadPhoto = ({route, navigation}) => {
   const {form} = route.params;
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState({uri: form.avatarUrl});
+  const [photoBase64, setPhotoData] = useState('');
   const updateProfile = () => {
     Qiscus.qiscus
       .updateProfile({
         name: form.fullName, // String
-        avatar_url: photo.uri,
+        avatar_url: photoBase64,
       })
       .then(res => {
         console.log('update profile success', res);
@@ -26,7 +27,7 @@ const UploadPhoto = ({route, navigation}) => {
       });
   };
   const onImageClick = () => {
-    ImagePicker.launchImageLibrary({mediaType: 'photo'}, response => {
+    ImagePicker.launchImageLibrary({includeBase64: true}, response => {
       console.log('response ->', response);
       if (response.didCancel) {
         showMessage({
@@ -37,6 +38,9 @@ const UploadPhoto = ({route, navigation}) => {
         });
       } else {
         const source = {uri: response.assets[0].uri};
+        setPhotoData(
+          `data:${response.assets[0].type};base64, ${response.assets[0].base64}`,
+        );
         setPhoto(source);
         setHasPhoto(true);
       }

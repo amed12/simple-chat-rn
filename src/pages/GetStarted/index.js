@@ -24,7 +24,7 @@ export default function GetStarted({navigation}) {
         <Button
           type="secondary"
           title="Sign In"
-          onPressButton={() => navigation.navigate('Login')}
+          onPressButton={() => navigation.replace('Login')}
         />
       </View>
     </ImageBackground>

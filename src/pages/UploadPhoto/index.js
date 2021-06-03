@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {showMessage} from 'react-native-flash-message';
 import * as ImagePicker from 'react-native-image-picker';
 import {ICAddUserProfle, ICloseRed} from '../../assets';
 import {Button, Gap, Header, Link} from '../../component';
 import {Qiscus} from '../../config';
-import {colors, fonts} from '../../utils';
+import {colors, fonts, showError} from '../../utils';
 
 const UploadPhoto = ({route, navigation}) => {
   const {form} = route.params;
@@ -32,12 +31,7 @@ const UploadPhoto = ({route, navigation}) => {
       response => {
         console.log('response ->', response);
         if (response.didCancel) {
-          showMessage({
-            message: 'Opss, you not choose any photo !',
-            type: 'default',
-            backgroundColor: colors.error,
-            color: colors.white,
-          });
+          showError('Opss, you not choose any photo !');
         } else {
           const source = {uri: response.assets[0].uri};
           setPhotoData(

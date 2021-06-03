@@ -1,11 +1,10 @@
 import React from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import {showMessage} from 'react-native-flash-message';
 import {useDispatch} from 'react-redux';
 import {ILlogo} from '../../assets';
 import {Button, Gap, Input, Link} from '../../component/Simple';
 import {Qiscus} from '../../config';
-import {colors, fonts, useForm} from '../../utils';
+import {colors, fonts, showError, useForm} from '../../utils';
 
 export default function Login({navigation}) {
   const [form, setForm] = useForm({email: '', password: ''});
@@ -24,21 +23,11 @@ export default function Login({navigation}) {
         .catch(err => {
           dispatch({type: 'SET_LOADING', value: false});
           console.log({...err});
-          showMessage({
-            message: err.response.text,
-            type: 'default',
-            backgroundColor: colors.error,
-            color: colors.white,
-          });
+          showError(err.response.text);
         });
     } else {
       dispatch({type: 'SET_LOADING', value: false});
-      showMessage({
-        message: 'Please fill out email or password!',
-        type: 'default',
-        backgroundColor: colors.error,
-        color: colors.white,
-      });
+      showError('Please fill out email or password!');
     }
   };
   return (

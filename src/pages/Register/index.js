@@ -1,10 +1,9 @@
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {showMessage} from 'react-native-flash-message';
 import {useDispatch} from 'react-redux';
 import {Button, Gap, Header, Input} from '../../component';
 import {Qiscus} from '../../config';
-import {colors, useForm} from '../../utils';
+import {colors, showError, useForm} from '../../utils';
 
 export default function Register({navigation}) {
   const [form, setForm] = useForm({
@@ -35,12 +34,7 @@ export default function Register({navigation}) {
       .catch(error => {
         const errorMessage = error.message;
         dispatch({type: 'SET_LOADING', value: false});
-        showMessage({
-          message: errorMessage,
-          type: 'default',
-          backgroundColor: colors.error,
-          color: colors.white,
-        });
+        showError(errorMessage);
       });
   };
   return (
@@ -90,12 +84,7 @@ export default function Register({navigation}) {
               ) {
                 onProcessForm();
               } else {
-                showMessage({
-                  message: 'Please fill all data first !',
-                  type: 'default',
-                  backgroundColor: colors.error,
-                  color: colors.white,
-                });
+                showError('Please fill all data first !');
               }
             }}
           />

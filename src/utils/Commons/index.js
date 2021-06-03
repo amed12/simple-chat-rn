@@ -2,9 +2,14 @@ import {Alert} from 'react-native';
 import {showMessage} from 'react-native-flash-message';
 import {colors} from '../Color';
 
-const showAlert = text =>
-  Alert.alert('Alert Title', text, [
-    {text: 'OK', onPress: () => console.log('OK Pressed')},
+const showAlert = (text, action) =>
+  Alert.alert('Warning !!', text, [
+    {
+      text: 'Cancel',
+      onPress: () => console.log('Cancel Pressed'),
+      style: 'cancel',
+    },
+    {text: 'OK', onPress: action},
   ]);
 
 const showError = message => {

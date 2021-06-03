@@ -1,6 +1,8 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {colors} from '../../../utils';
+import {Qiscus} from '../../../config';
+import {colors, showAlert} from '../../../utils';
 import {TabItem} from '../../Simple';
 
 const ButtomNavigation = ({state, descriptors, navigation}) => {
@@ -34,6 +36,21 @@ const ButtomNavigation = ({state, descriptors, navigation}) => {
           }
         };
 
+        const onPressOffices = () => {
+          if (index === 2) {
+            showAlert('mau log out ?', () => {
+              AsyncStorage.removeItem('qiscus')
+                .then(() => {
+                  navigation.replace('GetStarted');
+                  Qiscus.qiscus.disconnect();
+                })
+                .catch(error => {
+                  console.log('error when trying to logout', error);
+                });
+            });
+          }
+        };
+
         const onLongPress = () => {
           navigation.emit({
             type: 'tabLongPress',
@@ -46,7 +63,7 @@ const ButtomNavigation = ({state, descriptors, navigation}) => {
             key={index}
             title={label}
             active={isFocused}
-            // onPress={onPress}
+            onPress={onPressOffices}
             // onLongPress={onLongPress}
           />
         );

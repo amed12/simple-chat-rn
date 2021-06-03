@@ -6,23 +6,32 @@ import format from 'date-fns/format';
 import {parseISO} from 'date-fns';
 
 const ListChatroom = ({roomData, onPress}) => {
+  const getTime = time => {
+    time = parseISO(time);
+    if (isSameDay(time, new Date())) {
+      return format(time, 'HH:mm');
+    }
+    return format(time, 'dd/MM/yyyy');
+  };
+  const lastComment = roomData.last_comment_message.startsWith('[file]')
+    ? 'File attachment'
+    : roomData.last_comment_message;
+  const unreadCount = Number(roomData.count_notif);
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Image style={styles.avatar} source={roomData.profile} />
+      <Image style={styles.avatar} source={{uri: roomData.avatar}} />
       <View style={styles.dataContainer}>
         <View style={styles.content}>
           <Text style={styles.name}>{roomData.name}</Text>
-          <Text style={styles.lastMessage}>{roomData.lastMessage}</Text>
+          <Text style={styles.lastMessage}>{lastComment}</Text>
         </View>
         <View style={styles.meta}>
           <Text style={styles.time}>
-            {/* {this.getTime(room.last_comment_message_created_at)} */}
-            09:00
+            {getTime(roomData.last_comment_message_created_at)}
           </Text>
-          {/* {unreadCount > 0 && (
+          {unreadCount > 0 && (
             <Text style={styles.unreadCount}>{unreadCount}</Text>
-          )} */}
-          <Text style={styles.unreadCount}>{4}</Text>
+          )}
         </View>
       </View>
     </TouchableOpacity>

@@ -1,30 +1,46 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
-import {ICDummyCS} from '../../assets';
+import xs from 'xstream';
 import {ListChatroom} from '../../component';
+import {Qiscus} from '../../config';
 import {colors, fonts} from '../../utils';
 
 const Messages = ({navigation}) => {
-  const [messages] = useState([
-    {
-      id: 1,
-      profile: ICDummyCS,
-      name: 'Rizal',
-      lastMessage: 'terima kasih telah menghubungi kami',
-    },
-    {
-      id: 2,
-      profile: ICDummyCS,
-      name: 'Ramli',
-      lastMessage: 'terima kasih telah menghubungi kami',
-    },
-    {
-      id: 3,
-      profile: ICDummyCS,
-      name: 'Ridho',
-      lastMessage: 'terima kasih telah menghubungi kami',
-    },
-  ]);
+  const [messages, setMessages] = useState([]);
+  useEffect(() => {
+    const subscription = Qiscus.isLogin$()
+      .filter(isLogin => isLogin === true)
+      .take(1)
+      .map(() => xs.from(Qiscus.qiscus.loadRoomList()))
+      .flatten()
+      .subscribe({
+        next: rooms => {
+          setMessages(rooms);
+          console.log(rooms);
+          subscription.unsubscribe();
+        },
+      });
+    this.subscription = Qiscus.newMessage$().subscribe({
+      next: message => {
+        onNewMessage(message);
+      },
+    });
+    const onNewMessage = message => {
+      const roomId = message.room_id;
+      const room = messages.find(r => r.id === roomId);
+      if (room == null) {
+        return;
+      }
+      room.count_notif = (Number(room.count_notif) || 0) + 1;
+      room.last_comment_message = message.message;
+
+      const rooms = messages.filter(r => r.id !== roomId);
+      setMessages([room, ...rooms]);
+      return `Success updating room ${room.id}`;
+    };
+    return () => subscription.unsubscribe();
+  }, [messages]);
+
   return (
     <View style={styles.page}>
       <View style={styles.content}>

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 import {ICDummyCS} from '../../assets';
 import {ListChatroom} from '../../component';
 import {colors, fonts} from '../../utils';
@@ -29,17 +29,16 @@ const Messages = ({navigation}) => {
     <View style={styles.page}>
       <View style={styles.content}>
         <Text style={styles.title}>Messages</Text>
-        {messages.map(message => {
-          return (
+        <FlatList
+          data={messages}
+          keyExtractor={it => `key-${it.id}`}
+          renderItem={({item}) => (
             <ListChatroom
-              key={message.id}
-              profile={message.profile}
-              name={message.name}
-              lastMessage={message.lastMessage}
+              roomData={item}
               onPress={() => navigation.navigate('ChatRoom')}
             />
-          );
-        })}
+          )}
+        />
       </View>
     </View>
   );

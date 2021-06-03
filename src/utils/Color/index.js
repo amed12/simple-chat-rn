@@ -8,10 +8,12 @@ const mainColors = {
   grey3: '#edeef0',
   grey4: '#EDFCFD',
   grey5: '#b1b7c2',
+  grey6: '#979797',
   blue1: '#0066cb',
   black1: '#000000',
   black2: 'rgba(0, 0 ,0 , 0.5)',
   red1: '#e06379',
+  green2: '#94ca62',
 };
 
 export const colors = {
@@ -46,4 +48,6 @@ export const colors = {
   border: mainColors.grey2,
   loadingBackground: mainColors.black2,
   error: mainColors.red1,
+  unreadButton: mainColors.green2,
+  timeMessageItem: mainColors.grey6,
 };

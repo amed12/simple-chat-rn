@@ -1,13 +1,19 @@
-import React from 'react';
+import {useAsyncStorage} from '@react-native-async-storage/async-storage';
+import React, {useEffect} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useDispatch} from 'react-redux';
+import {useState} from 'react/cjs/react.development';
+import xs from 'xstream';
+import flattenConcurently from 'xstream/extra/flattenConcurrently';
 import {ILlogo} from '../../assets';
 import {Button, Gap, Input, Link} from '../../component/Simple';
 import {Qiscus} from '../../config';
 import {colors, fonts, showError, useForm} from '../../utils';
 
 export default function Login({navigation}) {
+  const storage = useAsyncStorage('qiscus');
   const [form, setForm] = useForm({email: '', password: ''});
+  const [isLogin, setIsLogin] = useState(false);
   const dispatch = useDispatch();
   const onProcessForm = () => {
     console.log('form', form);
@@ -18,7 +24,6 @@ export default function Login({navigation}) {
         .then(res => {
           dispatch({type: 'SET_LOADING', value: false});
           console.log('qiscus', res);
-          navigation.replace('MainApp');
         })
         .catch(err => {
           dispatch({type: 'SET_LOADING', value: false});
@@ -30,6 +35,28 @@ export default function Login({navigation}) {
       showError('Please fill out email or password!');
     }
   };
+  useEffect(() => {
+    const subscription = Qiscus.login$()
+      .map(it => it.user)
+      .take(1)
+      .map(data => xs.fromPromise(storage.setItem(JSON.stringify(data))))
+      .compose(flattenConcurently)
+      .subscribe({
+        next() {
+          setIsLogin(true);
+        },
+      });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [storage]);
+
+  useEffect(() => {
+    if (isLogin) {
+      navigation.replace('MainApp');
+    }
+  }, [isLogin, navigation]);
   return (
     <View style={styles.page}>
       <ScrollView showsVerticalScrollIndicator={false}>

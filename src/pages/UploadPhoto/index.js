@@ -27,24 +27,27 @@ const UploadPhoto = ({route, navigation}) => {
       });
   };
   const onImageClick = () => {
-    ImagePicker.launchImageLibrary({includeBase64: true}, response => {
-      console.log('response ->', response);
-      if (response.didCancel) {
-        showMessage({
-          message: 'Opss, you not choose any photo !',
-          type: 'default',
-          backgroundColor: colors.error,
-          color: colors.white,
-        });
-      } else {
-        const source = {uri: response.assets[0].uri};
-        setPhotoData(
-          `data:${response.assets[0].type};base64, ${response.assets[0].base64}`,
-        );
-        setPhoto(source);
-        setHasPhoto(true);
-      }
-    });
+    ImagePicker.launchImageLibrary(
+      {includeBase64: true, quality: 0.5, maxWidth: 200, maxHeight: 200},
+      response => {
+        console.log('response ->', response);
+        if (response.didCancel) {
+          showMessage({
+            message: 'Opss, you not choose any photo !',
+            type: 'default',
+            backgroundColor: colors.error,
+            color: colors.white,
+          });
+        } else {
+          const source = {uri: response.assets[0].uri};
+          setPhotoData(
+            `data:${response.assets[0].type};base64, ${response.assets[0].base64}`,
+          );
+          setPhoto(source);
+          setHasPhoto(true);
+        }
+      },
+    );
   };
   return (
     <View style={styles.page}>

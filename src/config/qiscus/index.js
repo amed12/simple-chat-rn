@@ -10,7 +10,9 @@ function distinct(stream) {
     start(listener) {
       subscription = stream.subscribe({
         next(data) {
-          if (data === lastData) return;
+          if (data === lastData) {
+            return;
+          }
 
           lastData = data;
           listener.next(data);

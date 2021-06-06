@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {ChatItem, Header, InputChat} from '../../component';
+import EmptyChat from '../../component/Complex/EmptyChat';
 import {colors, fonts} from '../../utils';
 
 const ChatRoom = ({navigation, route}) => {
@@ -18,9 +19,10 @@ const ChatRoom = ({navigation, route}) => {
       />
       <ScrollView style={styles.content}>
         <Text style={styles.chatDate}>ini chatroom</Text>
-        <ChatItem isMe />
+        {/* <ChatItem isMe />
         <ChatItem />
-        <ChatItem isMe />
+        <ChatItem isMe /> */}
+        <EmptyChat />
       </ScrollView>
       <InputChat />
     </View>

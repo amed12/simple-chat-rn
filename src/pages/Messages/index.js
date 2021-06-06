@@ -51,7 +51,11 @@ const Messages = ({navigation}) => {
           renderItem={({item}) => (
             <ListChatroom
               roomData={item}
-              onPress={() => navigation.navigate('ChatRoom')}
+              onPress={roomId =>
+                navigation.push('ChatRoom', {
+                  roomId,
+                })
+              }
             />
           )}
         />

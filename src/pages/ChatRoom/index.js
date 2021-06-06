@@ -4,7 +4,11 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {ChatItem, Header, InputChat} from '../../component';
 import {colors, fonts} from '../../utils';
 
-const ChatRoom = ({navigation}) => {
+const ChatRoom = ({navigation, route}) => {
+  const {roomId} = route.params;
+  if (roomId == null) {
+    return this.props.navigation.replace('MainApp');
+  }
   return (
     <View style={styles.page}>
       <Header

@@ -18,7 +18,9 @@ const ListChatroom = ({roomData, onPress}) => {
     : roomData.last_comment_message;
   const unreadCount = Number(roomData.count_notif);
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => onPress(roomData.id)}>
       <Image style={styles.avatar} source={{uri: roomData.avatar}} />
       <View style={styles.dataContainer}>
         <View style={styles.content}>

@@ -17,6 +17,7 @@ const ChatRoom = ({navigation, route}) => {
     isTyping: false,
     lastOnline: null,
     typingUsername: null,
+    participants: '',
   });
   useEffect(() => {
     if (roomId != null) {
@@ -76,12 +77,25 @@ const ChatRoom = ({navigation, route}) => {
   }
   const roomName = form.room ? form.room.name : 'Chat';
   const avatarURL = form.room ? {uri: form.room.avatar} : null;
-  const isGroup = () => {
-    if (form.room == null || form.room.room_type == null) {
-      return false;
+  const isGroup = form.room?.room_type === 'group';
+  if (
+    (form.room != null || form.room?.participants != null) &&
+    form.participants === ''
+  ) {
+    const limit = 3;
+    const overflowCount = form.room.participants.length - limit;
+    const participants = form.room.participants
+      .slice(0, limit)
+      .map(it => it.username.split(' ')[0]);
+    if (form.room.participants.length <= limit) {
+      setForm('participants', participants.join(', '));
     }
-    return form.room.room_type === 'group';
-  };
+    setForm(
+      'participants',
+      participants.concat(`and ${overflowCount} others.`).join(', '),
+    );
+  }
+
   return (
     <View style={styles.page}>
       <Header
@@ -91,7 +105,7 @@ const ChatRoom = ({navigation, route}) => {
         chatRoomInfo={{
           title: roomName,
           profile: avatarURL,
-          description: isGroup ? 'This is group' : 'personal room',
+          description: isGroup ? form.participants : 'personal room',
         }}
       />
       <ScrollView style={styles.content}>

@@ -4,9 +4,9 @@ import {colors, fonts} from '../../../utils';
 import {Button, Gap} from '../../Simple';
 import DarkProfile from './DarkProfile';
 
-const Header = ({text, onPress, type}) => {
+const Header = ({text, onPress, type, chatRoomInfo}) => {
   if (type === 'dark-profile') {
-    return <DarkProfile onPress={onPress} />;
+    return <DarkProfile onPress={onPress} chatRoomInfo={chatRoomInfo} />;
   }
   return (
     <View style={styles.container}>

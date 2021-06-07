@@ -1,19 +1,18 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
-import {ImgDummyCS2} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 import {Button} from '../../Simple';
 
-const DarkProfile = ({onPress}) => {
+const DarkProfile = ({onPress, chatRoomInfo}) => {
   return (
     <View style={styles.container}>
       <Button type="icon-only" icon="back-light" onPressButton={onPress} />
       <View style={styles.content}>
-        <Text style={styles.name}>Ramli</Text>
-        <Text style={styles.desc}>CS Product A</Text>
+        <Text style={styles.name}>{chatRoomInfo.title}</Text>
+        <Text style={styles.desc}>{chatRoomInfo.description}</Text>
       </View>
 
-      <Image source={ImgDummyCS2} style={styles.profile} />
+      <Image source={chatRoomInfo.profile} style={styles.profile} />
     </View>
   );
 };

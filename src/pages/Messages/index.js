@@ -19,6 +19,9 @@ const Messages = ({navigation}) => {
           console.log(rooms);
           subscription.unsubscribe();
         },
+        error: err => {
+          console.error('The Stream load room list gave me an error: ', err);
+        },
       });
     this.subscription = Qiscus.newMessage$().subscribe({
       next: message => {

@@ -76,6 +76,12 @@ const ChatRoom = ({navigation, route}) => {
   }
   const roomName = form.room ? form.room.name : 'Chat';
   const avatarURL = form.room ? {uri: form.room.avatar} : null;
+  const isGroup = () => {
+    if (form.room == null || form.room.room_type == null) {
+      return false;
+    }
+    return form.room.room_type === 'group';
+  };
   return (
     <View style={styles.page}>
       <Header
@@ -85,6 +91,7 @@ const ChatRoom = ({navigation, route}) => {
         chatRoomInfo={{
           title: roomName,
           profile: avatarURL,
+          description: isGroup ? 'This is group' : 'personal room',
         }}
       />
       <ScrollView style={styles.content}>

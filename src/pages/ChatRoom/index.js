@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import {ChatItem, Header, InputChat} from '../../component';
+import {ChatItem, Header, InputChat, MessageList} from '../../component';
 import EmptyChat from '../../component/Complex/EmptyChat';
 import {Qiscus} from '../../config';
 import {colors, fonts, useForm} from '../../utils';
@@ -47,31 +47,7 @@ const ChatRoom = ({navigation, route}) => {
             messages.sort(
               (a, b) => new Date(a.timestamp) - new Date(b.timestamp),
             );
-          const _messageFormatter = messages => {
-            const _messages = [];
-
-            for (let i = 0; i < messages.length; i++) {
-              const message = messages[i];
-              const lastMessage = messages[i - 1];
-              const messageDate = new Date(message.timestamp);
-              const lastMessageDate =
-                lastMessage == null ? null : new Date(lastMessage.timestamp);
-              const isSameDay = dateFns.isSameDay(messageDate, lastMessageDate);
-              const showDate = lastMessage != null && !isSameDay;
-
-              const dateMessage = {
-                ...message,
-                id: `date-${message.id}`,
-                type: 'date',
-                message: dateFns.format(messageDate, 'dd MMM yyyy'),
-              };
-              if (i === 0 || showDate) _messages.push(dateMessage);
-              _messages.push(message);
-            }
-
-            return _sortMessage(_messages);
-          };
-          setMessages(_messageFormatter(comments));
+          setMessages(_sortMessage(comments));
           console.log('war3', listMessage);
         })
         .catch(err => console.log(err));
@@ -178,9 +154,8 @@ const ChatRoom = ({navigation, route}) => {
         }}
       />
       <View style={styles.content}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {listMessage.length === 0 && <EmptyChat />}
-          {form.room != null &&
+        {listMessage.length === 0 && <EmptyChat />}
+        {/* {form.room != null &&
             listMessage.length > 0 &&
             listMessage.map(message => {
               return (
@@ -201,8 +176,15 @@ const ChatRoom = ({navigation, route}) => {
                   )}
                 </View>
               );
-            })}
-        </ScrollView>
+            })} */}
+        {listMessage.length > 0 && (
+          <MessageList
+            // isLoadMoreable={this.state.isLoadMoreable}
+            messages={listMessage}
+            // scroll={this.state.scroll}
+            // onLoadMore={this._loadMore}
+          />
+        )}
       </View>
       <InputChat
         value={form.chatContent}

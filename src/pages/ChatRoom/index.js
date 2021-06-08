@@ -3,7 +3,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {ChatItem, Header, InputChat} from '../../component';
 import EmptyChat from '../../component/Complex/EmptyChat';
-import {colors, fonts, useForm} from '../../utils';
+import {colors, fonts, showError, useForm} from '../../utils';
 import xs from 'xstream';
 import {Qiscus} from '../../config';
 
@@ -18,6 +18,7 @@ const ChatRoom = ({navigation, route}) => {
     lastOnline: null,
     typingUsername: null,
     participants: '',
+    chatContent: '',
   });
   useEffect(() => {
     if (roomId != null) {
@@ -95,6 +96,31 @@ const ChatRoom = ({navigation, route}) => {
       participants.concat(`and ${overflowCount} others.`).join(', '),
     );
   }
+  const sendMessage = async () => {
+    const message = _prepareMessage(form.chatContent);
+    // await this._addMessage(message, true);
+    const resp = await Qiscus.qiscus.sendComment(
+      form.room.id,
+      form.chatContent,
+      message.unique_temp_id,
+    );
+    // this._updateMessage(message, resp);
+    showError('success send sam');
+  };
+
+  const _prepareMessage = message => {
+    const date = new Date();
+    return {
+      id: date.getTime(),
+      uniqueId: '' + date.getTime(),
+      unique_temp_id: '' + date.getTime(),
+      timestamp: date.getTime(),
+      type: 'text',
+      status: 'sending',
+      message: message,
+      email: Qiscus.currentUser().email,
+    };
+  };
 
   return (
     <View style={styles.page}>
@@ -108,14 +134,20 @@ const ChatRoom = ({navigation, route}) => {
           description: isGroup ? form.participants : 'personal room',
         }}
       />
-      <ScrollView style={styles.content}>
-        <Text style={styles.chatDate}>ini chatroom</Text>
-        {/* <ChatItem isMe />
+      <View style={styles.content}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Text style={styles.chatDate}>ini chatroom</Text>
+          {/* <ChatItem isMe />
         <ChatItem />
         <ChatItem isMe /> */}
-        <EmptyChat />
-      </ScrollView>
-      <InputChat />
+          <EmptyChat />
+        </ScrollView>
+      </View>
+      <InputChat
+        value={form.chatContent}
+        onChangeText={value => setForm('chatContent', value)}
+        onPressButton={sendMessage}
+      />
     </View>
   );
 };

@@ -1,14 +1,14 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {ChatItem, Header, InputChat} from '../../component';
 import EmptyChat from '../../component/Complex/EmptyChat';
-import {colors, fonts, showError, useForm} from '../../utils';
-import xs from 'xstream';
 import {Qiscus} from '../../config';
+import {colors, fonts, useForm} from '../../utils';
 
 const ChatRoom = ({navigation, route}) => {
   const {roomId} = route.params;
+  const [listMessage, setMessages] = useState({});
   const [form, setForm] = useForm({
     room: null,
     messages: {},
@@ -22,16 +22,35 @@ const ChatRoom = ({navigation, route}) => {
   });
   useEffect(() => {
     if (roomId != null) {
-      const subscription1 = Qiscus.isLogin$()
-        .take(1)
-        .map(() => xs.from(Qiscus.qiscus.getRoomById(roomId)))
-        .flatten()
-        .subscribe({
-          next: room => setForm('room', room),
-          error: err => {
-            console.error('The Stream getroom id gave me an error: ', err);
-          },
-        });
+      Qiscus.qiscus
+        .getRoomById(roomId)
+        .then(room => {
+          setForm('room', room);
+          return Qiscus.qiscus.loadComments(roomId);
+        })
+        .then(comments => {
+          const currMessage = comments[0] || {};
+          // const isLoadMoreable = comments[0].comment_before_id !== 0;
+          const formattedMessages = comments.reduce((result, message) => {
+            const key = comments.unique_temp_id;
+
+            if (!result[key]) {
+              result[key] = [];
+            }
+
+            result[key].push(message);
+            // result[message.unique_temp_id] = message;
+            return result;
+          }, {});
+          const _sortMessage = messages =>
+            messages.sort(
+              (a, b) => new Date(a.timestamp) - new Date(b.timestamp),
+            );
+          setMessages(_sortMessage(comments));
+          console.log('war2', formattedMessages);
+        })
+        .catch(err => console.log(err));
+
       // const subscription2 = Qiscus.isLogin$()
       //   .take(1)
       //   .map(() => xs.from(Qiscus.qiscus.loadComments(roomId)))
@@ -47,8 +66,7 @@ const ChatRoom = ({navigation, route}) => {
       //         },
       //         {},
       //       );
-      //       setForm('messages', formattedMessages);
-      //       setForm('isLoadMoreable', isLoadMoreable);
+      //       setMessages(formattedMessages);
       //     },
       //   });
 
@@ -67,12 +85,12 @@ const ChatRoom = ({navigation, route}) => {
       //     error: error => console.log('subscription error', error),
       //   });
       return () => {
-        // Qiscus.qiscus.exitChatRoom();
+        Qiscus.qiscus.exitChatRoom();
 
-        subscription1.unsubscribe();
+        // subscription1.unsubscribe();
       };
     }
-  }, [roomId, setForm]);
+  }, []);
   if (roomId == null) {
     return this.props.navigation.replace('MainApp');
   }
@@ -105,7 +123,6 @@ const ChatRoom = ({navigation, route}) => {
       message.unique_temp_id,
     );
     // this._updateMessage(message, resp);
-    showError('success send sam');
   };
 
   const _prepareMessage = message => {
@@ -136,11 +153,20 @@ const ChatRoom = ({navigation, route}) => {
       />
       <View style={styles.content}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Text style={styles.chatDate}>ini chatroom</Text>
-          {/* <ChatItem isMe />
-        <ChatItem />
-        <ChatItem isMe /> */}
-          <EmptyChat />
+          {listMessage.length === 0 && <EmptyChat />}
+          {form.room != null &&
+            listMessage.length > 0 &&
+            listMessage.map(message => {
+              return (
+                <View key={message.id}>
+                  <Text style={styles.chatDate}>{message.timestamp}</Text>
+                  <ChatItem
+                    isMe={message.email === Qiscus.currentUser().email}
+                    text={message.message}
+                  />
+                </View>
+              );
+            })}
         </ScrollView>
       </View>
       <InputChat

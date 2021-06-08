@@ -1,17 +1,16 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
-import {ImgDummyCS2} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const IsOther = () => {
+const IsOther = ({time, text, photoUrl}) => {
   return (
     <View style={styles.container}>
-      <Image source={ImgDummyCS2} style={styles.avatar} />
+      <Image source={{uri: photoUrl}} style={styles.avatar} />
       <View>
         <View style={styles.chatContent}>
-          <Text style={styles.text}>Waalaikum salam , siapa ?</Text>
+          <Text style={styles.text}>{text}</Text>
         </View>
-        <Text style={styles.date}>4.20 AM</Text>
+        <Text style={styles.date}>{time}</Text>
       </View>
     </View>
   );

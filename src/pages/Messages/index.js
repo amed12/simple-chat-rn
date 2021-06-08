@@ -42,7 +42,7 @@ const Messages = ({navigation}) => {
       return `Success updating room ${room.id}`;
     };
     return () => subscription.unsubscribe();
-  }, [messages]);
+  }, []);
 
   return (
     <View style={styles.page}>

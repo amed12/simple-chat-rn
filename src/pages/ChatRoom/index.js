@@ -5,6 +5,7 @@ import {ChatItem, Header, InputChat} from '../../component';
 import EmptyChat from '../../component/Complex/EmptyChat';
 import {Qiscus} from '../../config';
 import {colors, fonts, useForm} from '../../utils';
+import * as dateFns from 'date-fns';
 
 const ChatRoom = ({navigation, route}) => {
   const {roomId} = route.params;
@@ -46,8 +47,32 @@ const ChatRoom = ({navigation, route}) => {
             messages.sort(
               (a, b) => new Date(a.timestamp) - new Date(b.timestamp),
             );
-          setMessages(_sortMessage(comments));
-          console.log('war2', formattedMessages);
+          const _messageFormatter = messages => {
+            const _messages = [];
+
+            for (let i = 0; i < messages.length; i++) {
+              const message = messages[i];
+              const lastMessage = messages[i - 1];
+              const messageDate = new Date(message.timestamp);
+              const lastMessageDate =
+                lastMessage == null ? null : new Date(lastMessage.timestamp);
+              const isSameDay = dateFns.isSameDay(messageDate, lastMessageDate);
+              const showDate = lastMessage != null && !isSameDay;
+
+              const dateMessage = {
+                ...message,
+                id: `date-${message.id}`,
+                type: 'date',
+                message: dateFns.format(messageDate, 'dd MMM yyyy'),
+              };
+              if (i === 0 || showDate) _messages.push(dateMessage);
+              _messages.push(message);
+            }
+
+            return _sortMessage(_messages);
+          };
+          setMessages(_messageFormatter(comments));
+          console.log('war3', listMessage);
         })
         .catch(err => console.log(err));
 
@@ -122,7 +147,8 @@ const ChatRoom = ({navigation, route}) => {
       form.chatContent,
       message.unique_temp_id,
     );
-    // this._updateMessage(message, resp);
+    // _updateMessage(message, resp);
+    setForm('chatContent', '');
   };
 
   const _prepareMessage = message => {
@@ -159,11 +185,20 @@ const ChatRoom = ({navigation, route}) => {
             listMessage.map(message => {
               return (
                 <View key={message.id}>
-                  <Text style={styles.chatDate}>{message.timestamp}</Text>
-                  <ChatItem
-                    isMe={message.email === Qiscus.currentUser().email}
-                    text={message.message}
-                  />
+                  {message.type === 'date' && (
+                    <Text style={styles.chatDate}>{message.message}</Text>
+                  )}
+                  {message.type !== 'date' && (
+                    <ChatItem
+                      isMe={message.email === Qiscus.currentUser().email}
+                      text={message.message}
+                      photoUrl={message.user_avatar_url}
+                      time={dateFns.format(
+                        new Date(message.timestamp),
+                        'HH:mm',
+                      )}
+                    />
+                  )}
                 </View>
               );
             })}

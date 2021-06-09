@@ -15,6 +15,8 @@ import MessageUpload from './MessageUpload';
 import MessageCustom from './MessageCustom';
 import {Qiscus} from '../../../config';
 import {IcDelivered, IcFailedSend, IcRead, IcSending} from '../../../assets';
+import ChatItem from '../ChatItem';
+import {colors, fonts} from '../../../utils';
 
 class AnimatedSending extends React.Component {
   animation = new Animated.Value(0);
@@ -80,7 +82,15 @@ export default class MessageList extends React.Component {
     const isDate = type === 'date';
     const isCustomMessage =
       type === 'custom' && typeof message.payload.content !== 'string';
+    function getTimeStamp() {
+      try {
+        return dateFns.format(new Date(message.timestamp), 'HH:mm');
+      } catch (err) {
+        return message.timestamp;
+      }
+    }
 
+    const timeValue = getTimeStamp();
     const containerStyle = [styles.container];
     if (isMe) containerStyle.push(styles.containerMe);
     if (isDate || isLoadMore) containerStyle.push(styles.containerDate);
@@ -102,19 +112,34 @@ export default class MessageList extends React.Component {
       content = this._renderCustomImageMessage(message);
 
     return (
-      <View style={containerStyle}>
-        {showMeta && this._renderMessageMeta(message)}
-        <View style={messageStyle}>
-          {isLoadMore && (
-            <TouchableWithoutFeedback
-              style={textStyle}
-              onPress={this.props.onLoadMore}>
-              {content}
-            </TouchableWithoutFeedback>
-          )}
-          {!isLoadMore && <View style={textStyle}>{content}</View>}
-        </View>
-        {showMetaOther && this._renderMessageMetaOther(message)}
+      <View>
+        {isLoadMore && (
+          <TouchableWithoutFeedback
+            style={textStyle}
+            onPress={this.props.onLoadMore}>
+            {content}
+          </TouchableWithoutFeedback>
+        )}
+        {isDate && (
+          <Text
+            style={{
+              fontSize: 11,
+              fontFamily: fonts.primary.normal,
+              color: colors.text.secondary,
+              marginVertical: 20,
+              textAlign: 'center',
+            }}>
+            {message.message}
+          </Text>
+        )}
+        {!isDate && (
+          <ChatItem
+            isMe={isMe}
+            text={message.message}
+            time={timeValue}
+            photoUrl={message.user_avatar_url}
+          />
+        )}
       </View>
     );
   };

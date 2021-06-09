@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
-import {ChatItem, Header, InputChat, MessageList} from '../../component';
+import {StyleSheet, View} from 'react-native';
+import {Header, InputChat, MessageList} from '../../component';
 import EmptyChat from '../../component/Complex/EmptyChat';
 import {Qiscus} from '../../config';
-import {colors, fonts, showError, useForm} from '../../utils';
-import * as dateFns from 'date-fns';
+import {colors, fonts, showSuccess, useForm} from '../../utils';
 
 const ChatRoom = ({navigation, route}) => {
   const {roomId} = route.params;
@@ -147,12 +145,12 @@ const ChatRoom = ({navigation, route}) => {
     if (roomId == null) return;
 
     const lastCommentId = listMessage[0].id;
-    showError(`Loading more message ${lastCommentId}`);
+    showSuccess(`Loading more message ${lastCommentId}`);
 
     Qiscus.qiscus
       .loadComments(roomId, {last_comment_id: lastCommentId})
       .then(messages => {
-        showError('Done loading message');
+        showSuccess('Done loading message');
         const isNowLoadMoreable = messages[0].comment_before_id !== 0;
         const newData = Object.assign(listMessage, messages);
         setMessages(newData);

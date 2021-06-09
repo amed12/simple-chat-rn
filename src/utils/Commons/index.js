@@ -21,4 +21,11 @@ const showError = message => {
   });
 };
 
-export {showAlert, showError};
+const showSuccess = message => {
+  showMessage({
+    message: message,
+    type: 'success',
+    color: colors.white,
+  });
+};
+export {showAlert, showError, showSuccess};

@@ -4,16 +4,16 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {ChatItem, Header, InputChat, MessageList} from '../../component';
 import EmptyChat from '../../component/Complex/EmptyChat';
 import {Qiscus} from '../../config';
-import {colors, fonts, useForm} from '../../utils';
+import {colors, fonts, showError, useForm} from '../../utils';
 import * as dateFns from 'date-fns';
 
 const ChatRoom = ({navigation, route}) => {
   const {roomId} = route.params;
   const [listMessage, setMessages] = useState({});
+  const [isLoadMoreable, setLoadMoreable] = useState({});
   const [form, setForm] = useForm({
     room: null,
     messages: {},
-    isLoadMoreable: true,
     isOnline: false,
     isTyping: false,
     lastOnline: null,
@@ -31,7 +31,7 @@ const ChatRoom = ({navigation, route}) => {
         })
         .then(comments => {
           const currMessage = comments[0] || {};
-          // const isLoadMoreable = comments[0].comment_before_id !== 0;
+          const isLoadMoreable = comments[0].comment_before_id !== 0;
           const formattedMessages = comments.reduce((result, message) => {
             const key = comments.unique_temp_id;
 
@@ -48,6 +48,7 @@ const ChatRoom = ({navigation, route}) => {
               (a, b) => new Date(a.timestamp) - new Date(b.timestamp),
             );
           setMessages(_sortMessage(comments));
+          setLoadMoreable(isLoadMoreable);
           console.log('war3', listMessage);
         })
         .catch(err => console.log(err));
@@ -141,6 +142,24 @@ const ChatRoom = ({navigation, route}) => {
     };
   };
 
+  const _loadMore = () => {
+    if (!isLoadMoreable) return;
+    if (roomId == null) return;
+
+    const lastCommentId = listMessage[0].id;
+    showError(`Loading more message ${lastCommentId}`);
+
+    Qiscus.qiscus
+      .loadComments(roomId, {last_comment_id: lastCommentId})
+      .then(messages => {
+        showError('Done loading message');
+        const isNowLoadMoreable = messages[0].comment_before_id !== 0;
+        // setMessages({...listMessage, messages});
+        setLoadMoreable(isNowLoadMoreable);
+      })
+      .catch(error => console.log('Error when loading more comment', error));
+  };
+
   return (
     <View style={styles.page}>
       <Header
@@ -155,34 +174,12 @@ const ChatRoom = ({navigation, route}) => {
       />
       <View style={styles.content}>
         {listMessage.length === 0 && <EmptyChat />}
-        {/* {form.room != null &&
-            listMessage.length > 0 &&
-            listMessage.map(message => {
-              return (
-                <View key={message.id}>
-                  {message.type === 'date' && (
-                    <Text style={styles.chatDate}>{message.message}</Text>
-                  )}
-                  {message.type !== 'date' && (
-                    <ChatItem
-                      isMe={message.email === Qiscus.currentUser().email}
-                      text={message.message}
-                      photoUrl={message.user_avatar_url}
-                      time={dateFns.format(
-                        new Date(message.timestamp),
-                        'HH:mm',
-                      )}
-                    />
-                  )}
-                </View>
-              );
-            })} */}
         {listMessage.length > 0 && (
           <MessageList
-            // isLoadMoreable={this.state.isLoadMoreable}
+            isLoadMoreable={isLoadMoreable}
             messages={listMessage}
             // scroll={this.state.scroll}
-            // onLoadMore={this._loadMore}
+            onLoadMore={_loadMore}
           />
         )}
       </View>

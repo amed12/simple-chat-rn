@@ -154,7 +154,8 @@ const ChatRoom = ({navigation, route}) => {
       .then(messages => {
         showError('Done loading message');
         const isNowLoadMoreable = messages[0].comment_before_id !== 0;
-        // setMessages({...listMessage, messages});
+        const newData = Object.assign(listMessage, messages);
+        setMessages(newData);
         setLoadMoreable(isNowLoadMoreable);
       })
       .catch(error => console.log('Error when loading more comment', error));

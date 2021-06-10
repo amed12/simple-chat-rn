@@ -15,7 +15,7 @@ import MessageUpload from './MessageUpload';
 import MessageCustom from './MessageCustom';
 import {Qiscus} from '../../../config';
 import {IcDelivered, IcFailedSend, IcRead, IcSending} from '../../../assets';
-import { fonts } from '../../../utils';
+import {fonts} from '../../../utils';
 
 class AnimatedSending extends React.Component {
   animation = new Animated.Value(0);
@@ -69,7 +69,9 @@ export default class MessageList extends React.Component {
         type: 'date',
         message: dateFns.format(messageDate, 'dd MMM yyyy'),
       };
-      if (i === 0 || showDate) _messages.push(dateMessage);
+      if (i === 0 || showDate) {
+        _messages.push(dateMessage);
+      }
       _messages.push(message);
     }
 
@@ -84,24 +86,37 @@ export default class MessageList extends React.Component {
       type === 'custom' && typeof message.payload.content !== 'string';
 
     const containerStyle = [styles.container];
-    if (isMe) containerStyle.push(styles.containerMe);
-    if (isDate || isLoadMore) containerStyle.push(styles.containerDate);
+    if (isMe) {
+      containerStyle.push(styles.containerMe);
+    }
+    if (isDate || isLoadMore) {
+      containerStyle.push(styles.containerDate);
+    }
 
     const messageStyle = [styles.message];
-    if (isMe) messageStyle.push(styles.messageMe);
-    if (isDate || isLoadMore) messageStyle.push(styles.messageDate);
+    if (isMe) {
+      messageStyle.push(styles.messageMe);
+    }
+    if (isDate || isLoadMore) {
+      messageStyle.push(styles.messageDate);
+    }
 
     const textStyle = [styles.messageText];
-    if (isDate) textStyle.push(styles.messageTextDate);
+    if (isDate) {
+      textStyle.push(styles.messageTextDate);
+    }
 
     const showMeta = isMe && !isDate && !isLoadMore;
     const showMetaOther = !isMe && !isDate && !isLoadMore;
 
     let content = <Text style={textStyle}>{message.message}</Text>;
 
-    if (type === 'upload') content = this._renderUploadMessage(message);
-    if (isCustomMessage && message.payload.type === 'image')
+    if (type === 'upload') {
+      content = this._renderUploadMessage(message);
+    }
+    if (isCustomMessage && message.payload.type === 'image') {
       content = this._renderCustomImageMessage(message);
+    }
 
     return (
       <View style={containerStyle}>
@@ -147,15 +162,21 @@ export default class MessageList extends React.Component {
   };
 
   _renderMessageStatus = status => {
-    if (status === 'sending') return <AnimatedSending />;
-    if (status === 'sent')
+    if (status === 'sending') {
+      return <AnimatedSending />;
+    }
+    if (status === 'sent') {
       return <Image style={styles.iconStatus} source={IcDelivered} />;
-    if (status === 'delivered')
+    }
+    if (status === 'delivered') {
       return <Image style={styles.iconStatus} source={IcDelivered} />;
-    if (status === 'read')
+    }
+    if (status === 'read') {
       return <Image style={styles.iconStatus} source={IcRead} />;
-    if (status === 'failed')
+    }
+    if (status === 'failed') {
       return <Image style={styles.iconStatus} source={IcFailedSend} />;
+    }
   };
 
   _onEndReached = debounce(distance => {
@@ -218,8 +239,9 @@ export default class MessageList extends React.Component {
         renderItem={({item}) => this._renderMessage(item)}
         getItemLayout={(data, index) => {
           let length = 80;
-          if (data.type === 'custom' && data.payload.type === 'image')
+          if (data.type === 'custom' && data.payload.type === 'image') {
             length = 300;
+          }
           return {length: length, offset: 0, index: index};
         }}
         onEndReached={distance => this._onEndReached(distance.distanceFromEnd)}

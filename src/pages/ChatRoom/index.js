@@ -103,7 +103,9 @@ export default class ChatRoom extends React.Component {
           onPress={() => this.props.navigation.replace('MainApp')}
           chatRoomInfo={{
             title: roomName,
-            description: this.isGroup ? this.participants : 'personal room',
+            description: this.isGroup
+              ? this.participants
+              : this.userOnlineStatus,
             profile: {uri: avatarURL},
           }}
         />
@@ -130,24 +132,6 @@ export default class ChatRoom extends React.Component {
     this.setState({
       commentSend: text,
     });
-  };
-
-  _renderOnlineStatus = () => {
-    const {isGroup} = this;
-    const {isTyping, isOnline, lastOnline, room} = this.state;
-    if (room == null) return;
-    if (isGroup || isTyping) return;
-
-    const lastOnlineText = dateFns.isSameDay(lastOnline, new Date())
-      ? dateFns.format(lastOnline, 'hh:mm')
-      : '';
-
-    return (
-      <>
-        {isOnline && <Text>Online</Text>}
-        {!isOnline && <Text>{lastOnlineText}</Text>}
-      </>
-    );
   };
 
   _onTyping = debounce(({username}) => {
@@ -408,6 +392,19 @@ export default class ChatRoom extends React.Component {
 
   get messages() {
     return this._sortMessage(Object.values(this.state.messages));
+  }
+
+  get userOnlineStatus() {
+    const {isGroup} = this;
+    const {isTyping, isOnline, lastOnline, room} = this.state;
+    if (room == null) return;
+    if (!isGroup && isTyping) return 'Typing...';
+
+    const lastOnlineText = dateFns.isSameDay(lastOnline, new Date())
+      ? dateFns.format(lastOnline, 'HH:mm')
+      : '';
+
+    return isOnline ? 'Online' : lastOnlineText;
   }
 }
 

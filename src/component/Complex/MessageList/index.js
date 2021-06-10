@@ -55,7 +55,8 @@ export default class MessageList extends React.Component {
     for (let i = 0; i < messages.length; i++) {
       const message = messages[i];
       const lastMessage = messages[i - 1];
-      const messageDate = new Date(message.timestamp);
+      const messageDate =
+        message.timestamp != null ? new Date(message.timestamp) : '';
       const lastMessageDate =
         lastMessage == null ? null : new Date(lastMessage.timestamp);
       const isSameDay = dateFns.isSameDay(messageDate, lastMessageDate);
@@ -124,7 +125,9 @@ export default class MessageList extends React.Component {
     return (
       <View style={styles.metaContainer}>
         <Text style={styles.metaTime}>
-          {dateFns.format(new Date(message.timestamp), 'HH:mm')}
+          {message.timestamp != null
+            ? dateFns.format(new Date(message.timestamp), 'HH:mm')
+            : ''}
         </Text>
         {this._renderMessageStatus(message.status)}
       </View>
@@ -134,7 +137,9 @@ export default class MessageList extends React.Component {
     return (
       <View style={styles.metaContainer}>
         <Text style={styles.metaTime}>
-          {dateFns.format(new Date(message.timestamp), 'HH:mm')}
+          {message.timestamp != null
+            ? dateFns.format(new Date(message.timestamp), 'HH:mm')
+            : ''}
         </Text>
       </View>
     );

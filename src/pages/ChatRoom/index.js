@@ -12,12 +12,13 @@ import debounce from 'lodash.debounce';
 import xs from 'xstream';
 import * as dateFns from 'date-fns';
 
-import {showSuccess} from '../../utils/Commons';
+import {showError, showSuccess} from '../../utils/Commons';
 import {Qiscus} from '../../config';
 import EmptyChat from '../../component/Complex/EmptyChat';
 import MessageList from '../../component/Complex/MessageList';
 import DarkProfile from '../../component/Complex/Header/DarkProfile';
 import InputChat from '../../component/Complex/InputChat';
+import {colors} from '../../utils';
 
 export default class ChatRoom extends React.Component {
   state = {
@@ -93,12 +94,13 @@ export default class ChatRoom extends React.Component {
 
     return (
       <View
+        style={styles.container}
         keyboardVerticalOffset={StatusBar.currentHeight}
         behavior="padding"
         enabled>
         <DarkProfile
           title={<Text>{roomName}</Text>}
-          onPress={() => this.props.navigation.goBack()}
+          onPress={() => this.props.navigation.replace('MainApp')}
           chatRoomInfo={{
             title: roomName,
             description: this.isGroup ? this.participants : 'personal room',
@@ -115,18 +117,20 @@ export default class ChatRoom extends React.Component {
             onLoadMore={this._loadMore}
           />
         )}
-        {/* <InputChat
+        <InputChat
           value={this.state.commentSend}
-          onChangeText={value =>
-            this.setState({
-              commentSend: value,
-            })
-          }
-          onPressButton={this._submitMessage(this.state.commentSend)}
-        /> */}
+          onChangeText={this._setCommentSend}
+          onPressButton={this._submitMessage}
+        />
       </View>
     );
   }
+
+  _setCommentSend = text => {
+    this.setState({
+      commentSend: text,
+    });
+  };
 
   _renderOnlineStatus = () => {
     const {isGroup} = this;
@@ -247,16 +251,20 @@ export default class ChatRoom extends React.Component {
     };
   };
 
-  _submitMessage = async text => {
-    const message = this._prepareMessage(text);
+  _submitMessage = async () => {
+    const message = this._prepareMessage(this.state.commentSend);
     await this._addMessage(message, true);
-    const resp = await Qiscus.qiscus.sendComment(
-      this.state.room.id,
-      text,
-      message.unique_temp_id,
-    );
-    this._updateMessage(message, resp);
+    const resp = await Qiscus.qiscus
+      .sendComment(
+        this.state.room.id,
+        this.state.commentSend,
+        message.unique_temp_id,
+      )
+      .then(res => console.log('success send message', res))
+      .catch(err => showError(err.message));
+    // this._updateMessage(message, resp);
     showSuccess('Success sending message!');
+    this._setCommentSend('');
   };
 
   _onSelectFile = () => {
@@ -402,3 +410,9 @@ export default class ChatRoom extends React.Component {
     return this._sortMessage(Object.values(this.state.messages));
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

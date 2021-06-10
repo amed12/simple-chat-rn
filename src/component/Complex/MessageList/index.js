@@ -15,6 +15,7 @@ import MessageUpload from './MessageUpload';
 import MessageCustom from './MessageCustom';
 import {Qiscus} from '../../../config';
 import {IcDelivered, IcFailedSend, IcRead, IcSending} from '../../../assets';
+import { fonts } from '../../../utils';
 
 class AnimatedSending extends React.Component {
   animation = new Animated.Value(0);
@@ -270,6 +271,7 @@ const styles = StyleSheet.create({
   },
   messageText: {
     fontSize: 13,
+    fontFamily: fonts.primary.normal,
     lineHeight: 23,
     color: '#666',
   },

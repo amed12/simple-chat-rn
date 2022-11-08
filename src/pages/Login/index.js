@@ -28,7 +28,9 @@ export default function Login({navigation}) {
         .catch(err => {
           dispatch({type: 'SET_LOADING', value: false});
           console.log({...err});
-          showError(err.response.text);
+          const {text} = err.response;
+          let jsonObject = JSON.parse(text);
+          showError(jsonObject.error.message);
         });
     } else {
       dispatch({type: 'SET_LOADING', value: false});

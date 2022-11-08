@@ -6,6 +6,7 @@ import {Qiscus} from './config';
 import {Provider, useSelector} from 'react-redux';
 import store from './redux/store';
 import {Loading} from './component';
+import 'react-native-gesture-handler';
 
 export default function App() {
   useEffect(() => {

@@ -7,8 +7,8 @@ import xs from 'xstream';
 import flattenConcurently from 'xstream/extra/flattenConcurrently';
 import {ILlogo} from '../../assets';
 import {Button, Gap, Input, Link} from '../../component/Simple';
-import {Qiscus} from '../../config';
-import {colors, fonts, showError, useForm} from '../../utils';
+import {FirebaseUtils, Qiscus} from '../../config';
+import {colors, fonts, showError, showSuccess, useForm} from '../../utils';
 
 export default function Login({navigation}) {
   const storage = useAsyncStorage('qiscus');
@@ -19,18 +19,28 @@ export default function Login({navigation}) {
     console.log('form', form);
     dispatch({type: 'SET_LOADING', value: true});
     if (form.email !== '' && form.password !== '') {
-      Qiscus.qiscus
-        .setUser(form.email, form.password)
-        .then(res => {
-          dispatch({type: 'SET_LOADING', value: false});
-          console.log('qiscus', res);
+      FirebaseUtils.auth()
+        .signInWithEmailAndPassword(form.email, form.password)
+        .then(userCredential => {
+          console.log({...userCredential});
+          Qiscus.qiscus
+            .setUser(form.email, form.password)
+            .then(res => {
+              dispatch({type: 'SET_LOADING', value: false});
+              console.log('qiscus', res);
+            })
+            .catch(err => {
+              dispatch({type: 'SET_LOADING', value: false});
+              console.log({...err});
+              const {text} = err.response;
+              let jsonObject = JSON.parse(text);
+              showError(jsonObject.error.message);
+            });
         })
-        .catch(err => {
+        .catch(error => {
           dispatch({type: 'SET_LOADING', value: false});
-          console.log({...err});
-          const {text} = err.response;
-          let jsonObject = JSON.parse(text);
-          showError(jsonObject.error.message);
+          console.log({...error});
+          showError(error.message);
         });
     } else {
       dispatch({type: 'SET_LOADING', value: false});

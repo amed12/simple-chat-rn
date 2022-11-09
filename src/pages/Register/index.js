@@ -2,7 +2,7 @@ import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {Button, Gap, Header, Input} from '../../component';
-import {Qiscus} from '../../config';
+import {FirebaseUtils, Qiscus} from '../../config';
 import {colors, showError, useForm} from '../../utils';
 
 export default function Register({navigation}) {
@@ -18,21 +18,31 @@ export default function Register({navigation}) {
   const dispatch = useDispatch();
   const onProcessForm = () => {
     dispatch({type: 'SET_LOADING', value: true});
-    Qiscus.qiscus
-      .setUser(form.email, form.password, form.userName, form.avatarUrl, {
-        job: form.job,
-        fullName: form.fullName,
+    FirebaseUtils.auth()
+      .createUserWithEmailAndPassword(form.email, form.password)
+      .then(user => {
+        Qiscus.qiscus
+          .setUser(form.email, form.password, form.userName, form.avatarUrl, {
+            job: form.job,
+            fullName: form.fullName,
+          })
+          .then(success => {
+            dispatch({type: 'SET_LOADING', value: false});
+            setForm('reset');
+            navigation.replace('UploadPhoto', {
+              form: form,
+            });
+            console.log('register firebase success', user);
+            console.log('register qiscus success', success);
+          })
+          .catch(error => {
+            const errorMessage = error.message;
+            dispatch({type: 'SET_LOADING', value: false});
+            showError(errorMessage);
+          });
       })
-      .then(success => {
-        dispatch({type: 'SET_LOADING', value: false});
-        setForm('reset');
-        navigation.replace('UploadPhoto', {
-          form: form,
-        });
-        console.log('register success', success);
-      })
-      .catch(error => {
-        const errorMessage = error.message;
+      .catch(err => {
+        const errorMessage = err.message;
         dispatch({type: 'SET_LOADING', value: false});
         showError(errorMessage);
       });

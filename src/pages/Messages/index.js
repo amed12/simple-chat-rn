@@ -3,7 +3,7 @@ import {FlatList, StyleSheet, Text, View} from 'react-native';
 import xs from 'xstream';
 import {ListChatroom} from '../../component';
 import {Qiscus} from '../../config';
-import {colors, fonts} from '../../utils';
+import {colors, fonts, showError} from '../../utils';
 
 const Messages = ({navigation}) => {
   const [messages, setMessages] = useState([]);
@@ -32,6 +32,12 @@ const Messages = ({navigation}) => {
       const roomId = message.room_id;
       const room = messages.find(r => r.id === roomId);
       if (room == null) {
+        Qiscus.qiscus
+          .loadRoomList()
+          .then(newRooms => {
+            setMessages(newRooms);
+          })
+          .catch(err => showError(err.message));
         return;
       }
       room.count_notif = (Number(room.count_notif) || 0) + 1;
